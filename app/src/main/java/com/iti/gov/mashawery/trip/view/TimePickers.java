@@ -1,4 +1,4 @@
-package com.iti.gov.mashawery;
+package com.iti.gov.mashawery.trip.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.TimePicker;
+
+import com.iti.gov.mashawery.R;
 
 import java.util.Calendar;
 
