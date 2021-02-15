@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Mashawery</string>
+
     <string name="Signuplogo">SignUp</string>
     <string name="userName">enter your UserName</string>
     <string name="email">enter your Email</string>
@@ -12,4 +13,16 @@
     <string name="time_save">Save</string>
     <string name="time_selected"></string>
     <string name="time_current">The Time is:</string>
+    <string name="button_save">Start</string>
+    <string name="tvTripNameLabel">Trip Name:</string>
+    <string name="tvStartPointLabel">Start Point:</string>
+    <string name="tvEndPoint">End Point:</string>
+    <string name="tvCreateNewTip">Create New Trip</string>
+    <string name="enter_start_point">Enter start point</string>
+    <string name="enter_trip_name">Enter trip name</string>
+    <string name="enter_end_point">Enter end point</string>
+    <string name="repetition">Repetition:</string>
+    <string name="trip_type">Trip type:</string>
+    <string name="next">Next</string>
+
 </resources>
