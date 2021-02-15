@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">Mashawery</string>
+    <string name="tvDay">Day</string>
+    <string name="tvMonth">Month</string>
+    <string name="tvTime">Time</string>
+    <string name="tvTripName">TripName</string>
+    <string name="tvStartPoint">Start</string>
+    <string name="tvEndPoint">End</string>
+    <string name="tvDone">Done</string>
+    <string name="tvCancelled">Canceled</string>
+    <string name="tvTripHistory">Trip History</string>
+    <string name="tvNewTripNotes">Create New Trip</string>
+    <string name="btnAddNewNote">+</string>
+    <string name="etNoteTitle">Title</string>
+    <string name="etNoteDesc">Description ..</string>
+    <string name="btnCancelNewNte">Cancel</string>
+    <string name="btnSaveNewNote">Save</string>
+    <string name="etSearchHistory">Type trip name ..</string>
+    <string name="btnFinish">Finish</string>
 </resources>
