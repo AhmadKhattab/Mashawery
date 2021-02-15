@@ -1,11 +1,11 @@
 <resources>
     <string name="app_name">Mashawery</string>
+
     <string name="tvDay">Day</string>
     <string name="tvMonth">Month</string>
     <string name="tvTime">Time</string>
     <string name="tvTripName">TripName</string>
     <string name="tvStartPoint">Start</string>
-    <string name="tvEndPoint">End</string>
     <string name="tvDone">Done</string>
     <string name="tvCancelled">Canceled</string>
     <string name="tvTripHistory">Trip History</string>
@@ -17,4 +17,30 @@
     <string name="btnSaveNewNote">Save</string>
     <string name="etSearchHistory">Type trip name ..</string>
     <string name="btnFinish">Finish</string>
+
+
+    <string name="Signuplogo">SignUp</string>
+    <string name="userName">enter your UserName</string>
+    <string name="email">enter your Email</string>
+    <string name="signup">Submit</string>
+    <string name="login">login</string>
+    <string name="donot_hava_account">Don\'t have an account? Register</string>
+    <string name="action_settings">Settings</string>
+    <string name="time_picker_example">Time Picker Example</string>
+    <string name="time_pick">Pick the time and press save button</string>
+    <string name="time_save">Save</string>
+    <string name="time_selected"></string>
+    <string name="time_current">The Time is:</string>
+    <string name="button_save">Start</string>
+    <string name="tvTripNameLabel">Trip Name:</string>
+    <string name="tvStartPointLabel">Start Point:</string>
+    <string name="tvEndPoint">End Point:</string>
+    <string name="tvCreateNewTip">Create New Trip</string>
+    <string name="enter_start_point">Enter start point</string>
+    <string name="enter_trip_name">Enter trip name</string>
+    <string name="enter_end_point">Enter end point</string>
+    <string name="repetition">Repetition:</string>
+    <string name="trip_type">Trip type:</string>
+    <string name="next">Next</string>
+
 </resources>

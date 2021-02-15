@@ -10,4 +10,8 @@
     <color name="orange">#f0932b</color>
     <color name="dark_blue">#2a458a</color>
     <color name="header_color">#f2f2f2</color>
+    <color name="date_color">#2A458A</color>
+    <color name="orange_color">#F0932B</color>
+
+
 </resources>

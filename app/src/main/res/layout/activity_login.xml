@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".registeration.view.LoginActivity">
+    <LinearLayout
+        android:id="@+id/linear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:weightSum="2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="20dp">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:contentDescription="@string/Signuplogo"
+            android:src="@drawable/signup"
+            app:civ_border_color="#F16950"
+            app:civ_border_width="1dp" />
+    </LinearLayout>
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@android:color/white"
+        android:elevation="4dp"
+        app:cardElevation="4dp"
+        app:cardCornerRadius="24dp"
+        android:layout_margin="8dp"
+        app:layout_constraintTop_toBottomOf="@id/linear"
+        app:layout_constraintEnd_toStartOf="parent"
+
+        tools:ignore="MissingConstraints"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:weightSum="10"
+          >
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="30dp"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="16dp"
+                    android:orientation="horizontal"
+                    android:weightSum="5">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        app:srcCompat="@drawable/ic_email_24" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/edit_email_signup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColorHint="@android:color/darker_gray"
+                        app:hintTextColor="@android:color/darker_gray"
+                        app:passwordToggleEnabled="true"
+                        app:passwordToggleTint="@color/white"
+                        tools:ignore="MissingConstraints">
+
+                        <EditText
+                            android:id="@+id/edit_email_signup_sign_up"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/white"
+                            android:ems="5"
+
+                            android:fontFamily="sans-serif-condensed-medium"
+                            android:hint="enter your email"
+                            android:inputType="textWebEmailAddress"
+                            android:textColor="@color/black" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="16dp"
+                    android:orientation="horizontal"
+                    android:weightSum="5">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        app:srcCompat="@drawable/ic_pass" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/edit_pass_signup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColorHint="@android:color/darker_gray"
+                        app:hintTextColor="@android:color/darker_gray"
+                        app:passwordToggleEnabled="true"
+                        app:passwordToggleTint="@android:color/darker_gray"
+                        tools:ignore="MissingConstraints">
+
+                        <EditText
+                            android:id="@+id/edit_password_sign_up"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:background="@color/white"
+
+                            android:ems="5"
+                            android:fontFamily="sans-serif-condensed-medium"
+                            android:hint="enter your passwoed"
+                            android:inputType="textPassword"
+                            android:textColor="@color/black" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
+
+                <Button
+                    android:id="@+id/button_sign_up"
+                    android:layout_width="150dp"
+                    android:layout_height="55dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/btnsregback"
+                    android:gravity="center"
+                    android:text="@string/login"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="22sp"
+                    app:backgroundTint="@color/orange"
+                    app:cornerRadius="24dp" />
+
+                <com.google.android.gms.common.SignInButton
+                    android:id="@+id/google_sign_in_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="16dp"
+
+
+                    />
+
+                <TextView
+                    android:id="@+id/text_register"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="sans-serif-black"
+                    android:gravity="center"
+                    android:text="@string/donot_hava_account"
+                    android:textColor="#60778B"
+                    android:textSize="16sp"
+                    app:layout_constraintTop_toBottomOf="@id/card" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
