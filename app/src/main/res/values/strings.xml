@@ -24,7 +24,8 @@
     <string name="email">enter your Email</string>
     <string name="signup">Submit</string>
     <string name="login">login</string>
-    <string name="donot_hava_account">Don\'t have an account? Register</string>
+    <string name="donot_hava_account">Don\'t have an account? <u>Register</u></string>
+    <string name="Have_an_account">Already  an account? <u>Login</u></string>
     <string name="action_settings">Settings</string>
     <string name="time_picker_example">Time Picker Example</string>
     <string name="time_pick">Pick the time and press save button</string>

@@ -13,15 +13,17 @@
         <activity android:name=".history.view.HistoryActivity"></activity>
         <activity android:name=".trip.view.TimePickers" />
         <activity android:name=".registeration.view.LoginActivity" />
-        <activity android:name=".registeration.view.RegisterActivity" />
+        <activity android:name=".registeration.view.RegisterActivity" >
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
         <activity android:name=".trip.view.AddTripActivity" />
         <activity android:name=".home.view.MainActivity">
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 
