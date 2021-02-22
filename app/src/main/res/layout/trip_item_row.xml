@@ -5,13 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
+    android:layout_marginTop="30dp"
+    android:layout_marginBottom="20dp"
     app:cardCornerRadius="15dp"
     app:cardElevation="20dp"
     tools:context=".home.view.MainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint"
         android:layout_width="match_parent"
-        android:layout_height="195dp">
+        android:layout_height="match_parent">
 
         <ImageView
             android:id="@+id/ivRemove"
@@ -27,9 +30,9 @@
             app:srcCompat="@drawable/remove" />
 
         <LinearLayout
-            android:id="@+id/linearLayout4"
-            android:layout_width="137dp"
-            android:layout_height="214dp"
+            android:id="@+id/status"
+            android:layout_width="139dp"
+            android:layout_height="208dp"
             android:layout_weight="1"
             android:background="@color/date_color"
             android:orientation="vertical"
@@ -48,7 +51,7 @@
                 android:layout_marginTop="30dp"
                 android:text="5"
                 android:textColor="@color/white"
-                android:textSize="36sp"
+                android:textSize="24sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -59,7 +62,7 @@
                 android:layout_marginTop="5dp"
                 android:text="Dec"
                 android:textColor="@color/white"
-                android:textSize="30sp"
+                android:textSize="24sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -67,19 +70,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="15dp"
                 android:text="10:30"
                 android:textColor="@color/white" />
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="231dp"
-            android:layout_height="211dp"
+            android:layout_width="232dp"
+            android:layout_height="207dp"
             android:layout_weight="2"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/linearLayout4"
+            app:layout_constraintStart_toEndOf="@+id/status"
             app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
@@ -95,6 +98,7 @@
                     android:layout_marginLeft="15dp"
                     android:layout_weight="1"
                     android:text="@string/tvTripNameLabel"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -102,7 +106,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="TextViewTextView" />
+                    android:gravity="center"
+                    android:text="TextViewTextView"
+                    android:textAlignment="center"
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
@@ -117,8 +124,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
+                    android:layout_marginRight="5dp"
                     android:layout_weight="1"
                     android:text="@string/tvStartPointLabel"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -126,13 +135,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="TextView" />
+                    android:gravity="center"
+                    android:text="TextView"
+                    android:textAlignment="center"
+                    android:textSize="12sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="30dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -140,8 +152,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
+                    android:layout_marginRight="5dp"
                     android:layout_weight="1"
                     android:text="@string/tvEndPoint"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -149,21 +163,25 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="TextView" />
+                    android:gravity="center"
+                    android:text="TextView"
+                    android:textAlignment="center"
+                    android:textSize="12sp" />
             </LinearLayout>
 
             <Button
                 android:id="@+id/btnStart"
-                android:layout_width="129dp"
-                android:layout_height="46dp"
+                android:layout_width="114dp"
+                android:layout_height="38dp"
                 android:layout_gravity="right"
                 android:layout_marginTop="30dp"
                 android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/rounded_button"
-                android:elevation="2dp"
+                android:elevation="4dp"
                 android:text="@string/button_save"
                 android:textAllCaps="false"
-                android:textSize="18sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 app:backgroundTint="@color/orange_color" />
         </LinearLayout>

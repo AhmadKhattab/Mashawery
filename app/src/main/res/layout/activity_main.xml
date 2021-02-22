@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:context=".home.view.MainActivity"
     >
 
     <LinearLayout
@@ -22,8 +23,10 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/tripRecycler"
-        android:layout_width="414dp"
-        android:layout_height="561dp"
+        android:layout_width="392dp"
+        android:layout_height="469dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.304"
