@@ -18,13 +18,18 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
+import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.iti.gov.mashawery.R;
 import com.iti.gov.mashawery.databinding.FragmentTripInfoBinding;
 import com.iti.gov.mashawery.model.Trip;
 import com.iti.gov.mashawery.trip.create.viewmodel.TripViewModel;
+
+import java.util.Arrays;
+import java.util.List;
 
 
 public class TripInfoFragment extends Fragment {
@@ -54,10 +59,10 @@ public class TripInfoFragment extends Fragment {
         binding = FragmentTripInfoBinding.bind(view);
 
         //Initialize places
-        //Places.initialize(getActivity().getApplicationContext(), "AIzaSyBdVG9vzyj-y_qnexqsPyFVpXKOaHjtRUs");
+        Places.initialize(getActivity().getApplicationContext(), "AIzaSyBdVG9vzyj-y_qnexqsPyFVpXKOaHjtRUs");
 
         //Set EditText trip start point non-focusable
-        /*
+
         binding.etTripStartPoint.setFocusable(false);
         binding.etTripStartPoint.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,10 +80,10 @@ public class TripInfoFragment extends Fragment {
 
             }
         });
-        */
+
 
         //Set EditText trip end point non-focusable
-        /*
+
         binding.etTripEndPoint.setFocusable(false);
         binding.etTripEndPoint.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,7 +102,7 @@ public class TripInfoFragment extends Fragment {
             }
         });
 
-         */
+
     }
 
     @Override

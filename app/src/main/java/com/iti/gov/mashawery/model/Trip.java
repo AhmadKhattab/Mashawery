@@ -9,7 +9,7 @@ public class Trip {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
-    private String userId = "khattab@ans";
+    private String userId;
     private String name;
     private String startPoint;
     private String endPoint;
@@ -17,7 +17,7 @@ public class Trip {
     private String time;
     private String type;
     private String repetition;
-    private int Status = 2;
+    private int Status = 0;
     private NotesHolder noteList;
 
 

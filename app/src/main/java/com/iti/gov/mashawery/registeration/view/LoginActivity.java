@@ -79,12 +79,14 @@ public class LoginActivity extends AppCompatActivity {
                                public void onComplete(@NonNull Task<AuthResult> task) {
                                    if (task.isSuccessful()) {
                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                       userID = fAuth.getCurrentUser().getUid();
                                        startActivity(intent);
                                       // progressDialog.dismiss();
                                        SharedPref.setLogin(true);
                                        SharedPref.setLoginWithFirebase(true);
                                        SharedPref.setRegisterWithFirebase(true);
                                        SharedPref.setUserEmail(email);
+                                       SharedPref.setUserId(userID);
                                        Log.e("le",email);
                                        finish();
                                    } else {

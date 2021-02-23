@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 
@@ -32,8 +34,10 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     public static final String TRIP_ID = "TRIP_ID";
+    public static final int STATUS_DONE = 2;
     ActivityMainBinding binding;
     TripsAdapter tripsAdapter;
+    HomeViewModel homeViewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,12 +50,16 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(binding.getRoot());
 
+        //Ensure that userID stored correctly
+        SharedPref.createPrefObject(this);
+        Log.d("User Id", "onCreate: " + SharedPref.getCurrentUserId());
+
         tripsAdapter = new TripsAdapter();
         configureTripsRecyclerView();
 
         TripsRepoInterface tripsRepoInterface = new TripsRepo(this);
 
-        HomeViewModel homeViewModel = new HomeViewModel();
+        homeViewModel = new HomeViewModel();
         homeViewModel.setTripsRepoInterface(tripsRepoInterface);
         homeViewModel.getTrips();
 
@@ -68,6 +76,12 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTripStart(Trip trip) {
+                trip.setStatus(STATUS_DONE);
+                homeViewModel.updateTripInDB(trip);
+                Uri gmmIntentUri = Uri.parse("http://maps.google.com/maps?daddr=" + trip.getEndPoint());
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                startActivity(mapIntent);
 
             }
         });

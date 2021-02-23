@@ -23,6 +23,7 @@ import com.iti.gov.mashawery.R;
 import com.iti.gov.mashawery.databinding.FragmentAddNotesBinding;
 import com.iti.gov.mashawery.databinding.InsertNewNoteBinding;
 import com.iti.gov.mashawery.home.view.MainActivity;
+import com.iti.gov.mashawery.localStorage.SharedPref;
 import com.iti.gov.mashawery.model.Note;
 import com.iti.gov.mashawery.trip.create.viewmodel.TripViewModel;
 
@@ -164,6 +165,9 @@ public class AddNotesFragment extends Fragment {
         binding.btnFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SharedPref.createPrefObject(getActivity());
+                String currentUserId = SharedPref.getCurrentUserId();
+                tripViewModel.setUserId(currentUserId);
                 tripViewModel.insertTrip();
                 tripViewModel.creationCompleted();
             }

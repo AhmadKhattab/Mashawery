@@ -42,6 +42,7 @@
         app:fab_labelStyle="@style/custum_fab"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.929"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tripRecycler"
         app:layout_constraintVertical_bias="1.0">
@@ -68,8 +69,7 @@
             app:fab_colorNormal="#A4C1FB"
             app:fab_icon="@drawable/ic_add"
             app:fab_size="mini"
-            app:fab_title="Add Trip"
-            ></com.getbase.floatingactionbutton.FloatingActionButton>
+            app:fab_title="Add Trip"></com.getbase.floatingactionbutton.FloatingActionButton>
 
 
         <com.getbase.floatingactionbutton.FloatingActionButton
@@ -82,7 +82,8 @@
             app:fab_title="profile"
 
 
-           ></com.getbase.floatingactionbutton.FloatingActionButton>
+            ></com.getbase.floatingactionbutton.FloatingActionButton>
+
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab3"
             android:layout_width="wrap_content"

@@ -4,6 +4,7 @@ package com.iti.gov.mashawery.trip.create.viewmodel;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.iti.gov.mashawery.localStorage.SharedPref;
 import com.iti.gov.mashawery.model.Note;
 import com.iti.gov.mashawery.model.Trip;
 import com.iti.gov.mashawery.model.NotesHolder;
@@ -22,7 +23,6 @@ public class TripViewModel extends ViewModel {
     public MutableLiveData<Trip> tripLiveData;
     public MutableLiveData<Note> note;
 
-    //    public MediatorLiveData<List<Trip>> tripList;
     private TripsRepoInterface tripsRepoInterface;
 
 
@@ -40,8 +40,6 @@ public class TripViewModel extends ViewModel {
         tripLiveData = new MutableLiveData<>();
         tripLiveData.setValue(null);
 
-//        tripList = new MediatorLiveData<>();
-//        tripList.setValue(new ArrayList<>());
 
     }
 
@@ -139,5 +137,10 @@ public class TripViewModel extends ViewModel {
 
         tripLiveData.getValue().setDate(date);
         tripLiveData.getValue().setTime(time);
+    }
+
+
+    public void setUserId(String currentUserId) {
+        tripLiveData.getValue().setUserId(currentUserId);
     }
 }
