@@ -143,4 +143,8 @@ public class TripViewModel extends ViewModel {
     public void setUserId(String currentUserId) {
         tripLiveData.getValue().setUserId(currentUserId);
     }
+
+    public void setTripId(int tripId) {
+        tripLiveData.getValue().setId(tripId);
+    }
 }

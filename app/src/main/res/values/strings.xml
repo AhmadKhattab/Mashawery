@@ -58,5 +58,7 @@
     <string name="cancel">Cancel</string>
     <string name="daily">Daily</string>
     <string name="round_trip">Round trip</string>
+    <string name="snooze">Snooze</string>
+    <string name="start">Start</string>
 
 </resources>

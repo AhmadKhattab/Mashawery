@@ -3,9 +3,11 @@ package com.iti.gov.mashawery.model;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
+
 
 @Entity(tableName = "trips_table")
-public class Trip {
+public class Trip implements Serializable {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
