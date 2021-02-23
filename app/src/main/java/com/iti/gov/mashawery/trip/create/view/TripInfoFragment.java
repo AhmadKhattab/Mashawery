@@ -1,4 +1,4 @@
-package com.iti.gov.mashawery.trip.view;
+package com.iti.gov.mashawery.trip.create.view;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,18 +18,13 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
-import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
-import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.iti.gov.mashawery.R;
 import com.iti.gov.mashawery.databinding.FragmentTripInfoBinding;
 import com.iti.gov.mashawery.model.Trip;
-import com.iti.gov.mashawery.trip.viewmodel.TripViewModel;
-
-import java.util.Arrays;
-import java.util.List;
+import com.iti.gov.mashawery.trip.create.viewmodel.TripViewModel;
 
 
 public class TripInfoFragment extends Fragment {
@@ -128,11 +123,11 @@ public class TripInfoFragment extends Fragment {
                     trip.setName(binding.etTripName.getText().toString());
                     trip.setStartPoint(binding.etTripStartPoint.getText().toString());
                     trip.setEndPoint(binding.etTripEndPoint.getText().toString());
+
                     int selectedFromRepetition = binding.repetitionRaioGroup.getCheckedRadioButtonId();
                     RadioButton selectedBtnFromRepetition = binding.getRoot().findViewById(selectedFromRepetition);
 
                     int selectedFromType = binding.tripTypeRadioGroup.getCheckedRadioButtonId();
-
                     RadioButton selectedBtnFromType = binding.getRoot().findViewById(selectedFromType);
 
                     trip.setRepetition(selectedBtnFromRepetition.getText().toString());

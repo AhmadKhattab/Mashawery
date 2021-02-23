@@ -21,12 +21,14 @@ public class TripsRepo implements TripsRepoInterface {
 
     private MutableLiveData<List<Trip>> tripListLiveData = new MutableLiveData<>();
     private MutableLiveData<List<Trip>> historyListLiveData = new MutableLiveData<>();
+    private MutableLiveData<Trip> tripLiveData = new MutableLiveData<>();
     private TripsDatabase tripsDatabase;
 
     public TripsRepo(Context context) {
         tripsDatabase = TripsDatabase.getInstance(context);
         tripListLiveData.setValue(new ArrayList<>());
         historyListLiveData.setValue(new ArrayList<>());
+        tripLiveData.setValue(new Trip());
     }
 
     @Override
@@ -54,6 +56,31 @@ public class TripsRepo implements TripsRepoInterface {
                 });
 
         return tripListLiveData;
+    }
+
+    @Override
+    public MutableLiveData<Trip> getTripById(int tripId) {
+        tripsDatabase.tripDao().getTripById(tripId)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<Trip>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(@NonNull Trip trip) {
+                        tripLiveData.setValue(trip);
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+                });
+
+        return tripLiveData;
     }
 
     @Override
@@ -111,6 +138,32 @@ public class TripsRepo implements TripsRepoInterface {
     @Override
     public void removeTrip(int tripId) {
         tripsDatabase.tripDao().removeTrip(tripId)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        getHistory();
+                        getTrips();
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+                });
+
+    }
+
+    @Override
+    public void updateTrip(Trip trip) {
+
+        tripsDatabase.tripDao().updateTrip(trip)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new CompletableObserver() {

@@ -1,4 +1,4 @@
-package com.iti.gov.mashawery.trip.view;
+package com.iti.gov.mashawery.trip.edit.view;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -14,29 +14,29 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.iti.gov.mashawery.R;
-
 import com.iti.gov.mashawery.databinding.FragmentAddNotesBinding;
+import com.iti.gov.mashawery.databinding.FragmentEditTripNotesBinding;
 import com.iti.gov.mashawery.databinding.InsertNewNoteBinding;
 import com.iti.gov.mashawery.home.view.MainActivity;
 import com.iti.gov.mashawery.model.Note;
-import com.iti.gov.mashawery.trip.viewmodel.TripViewModel;
+import com.iti.gov.mashawery.trip.create.view.NoteListenerInterface;
+import com.iti.gov.mashawery.trip.create.view.NotesAdapter;
+import com.iti.gov.mashawery.trip.create.viewmodel.TripViewModel;
+import com.iti.gov.mashawery.trip.edit.viewmodel.EditTripViewModel;
 
-import java.io.DataInput;
-import java.util.ArrayList;
 import java.util.List;
 
 
-public class AddNotesFragment extends Fragment {
-    FragmentAddNotesBinding binding;
+public class EditTripNotesFragment extends Fragment {
+
+    FragmentEditTripNotesBinding binding;
     InsertNewNoteBinding insertNewNoteBinding;
-    TripViewModel tripViewModel;
+    EditTripViewModel editTripViewModel;
     NotesAdapter notesAdapter;
     Dialog dialog;
 
@@ -57,14 +57,14 @@ public class AddNotesFragment extends Fragment {
 
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_notes, container, false);
+        return inflater.inflate(R.layout.fragment_edit_trip_notes, container, false);
 
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        binding = FragmentAddNotesBinding.bind(view);
+        binding = FragmentEditTripNotesBinding.bind(view);
         configureNotesRecyclerView();
 
 
@@ -73,13 +73,15 @@ public class AddNotesFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        tripViewModel = ViewModelProviders.of(getActivity()).get(TripViewModel.class);
+        editTripViewModel = ViewModelProviders.of(getActivity()).get(EditTripViewModel.class);
         dialog = new Dialog(getActivity());
+
+        editTripViewModel.setNoteListLiveData();
 
         insertNewNoteBinding = InsertNewNoteBinding.inflate(getLayoutInflater());
         dialog.setContentView(insertNewNoteBinding.getRoot());
 
-        tripViewModel.note.observe(getViewLifecycleOwner(), new Observer<Note>() {
+        editTripViewModel.noteLiveData.observe(getViewLifecycleOwner(), new Observer<Note>() {
             @Override
             public void onChanged(Note note) {
                 currentNote = note;
@@ -103,10 +105,10 @@ public class AddNotesFragment extends Fragment {
                     if(currentNote.getTitle() != null &&
                             currentNote.getDescription() != null) {
 
-                        tripViewModel.updateNoteList(currentNote, noteTitle, noteDesc);
-                        
+                        editTripViewModel.updateNoteList(currentNote, noteTitle, noteDesc);
+
                     } else {
-                        tripViewModel.addNoteToList(new Note(noteTitle, noteDesc));
+                        editTripViewModel.addNoteToList(new Note(noteTitle, noteDesc));
                     }
                     dialog.dismiss();
                 }
@@ -130,12 +132,12 @@ public class AddNotesFragment extends Fragment {
 
 
 
-        notesAdapter.setNoteList(tripViewModel.noteListLiveData.getValue());
+        notesAdapter.setNoteList(editTripViewModel.noteListLiveData.getValue());
 
         notesAdapter.setNoteListenerInterface(new NoteListenerInterface() {
             @Override
             public void onNoteClicked(Note note) {
-                tripViewModel.note.setValue(note);
+                editTripViewModel.noteLiveData.setValue(note);
                 insertNewNoteBinding.etNoteTitle.setText(note.getTitle());
                 insertNewNoteBinding.etNoteDesc.setText(note.getDescription());
                 dialog.show();
@@ -143,11 +145,11 @@ public class AddNotesFragment extends Fragment {
 
             @Override
             public void onNoteDeleted(Note note) {
-                tripViewModel.deleteSelectedNote(note);
+                editTripViewModel.deleteSelectedNote(note);
             }
         });
 
-        tripViewModel.noteListLiveData.observe(getActivity(), new Observer<List<Note>>() {
+        editTripViewModel.noteListLiveData.observe(getActivity(), new Observer<List<Note>>() {
             @Override
             public void onChanged(List<Note> notes) {
                 notesAdapter.setNoteList(notes);
@@ -156,7 +158,7 @@ public class AddNotesFragment extends Fragment {
 
 
 
-        tripViewModel.finishFlag.observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+        editTripViewModel.finishFlag.observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean finishFlag) {
                 if(finishFlag) {
@@ -165,11 +167,21 @@ public class AddNotesFragment extends Fragment {
                 }
             }
         });
-        binding.btnFinish.setOnClickListener(new View.OnClickListener() {
+
+        //Handling update button
+        binding.btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tripViewModel.insertTrip();
-                tripViewModel.creationCompleted();
+                editTripViewModel.updateTripInDB();
+                editTripViewModel.creationCompleted();
+            }
+        });
+
+        //Handling cancel button
+        binding.btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editTripViewModel.creationCompleted();
             }
         });
 

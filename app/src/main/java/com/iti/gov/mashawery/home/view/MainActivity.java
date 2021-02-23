@@ -15,12 +15,13 @@ import com.iti.gov.mashawery.home.viewmodel.HomeViewModel;
 import com.iti.gov.mashawery.model.Trip;
 import com.iti.gov.mashawery.model.repository.TripsRepo;
 import com.iti.gov.mashawery.model.repository.TripsRepoInterface;
+import com.iti.gov.mashawery.trip.edit.view.EditTripActivity;
 
 import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
-    public static final String WE_HAVE_TO_UPDATE = "WE_HAVE_TO_UPDATE";
+    public static final String TRIP_ID = "TRIP_ID";
     ActivityMainBinding binding;
     TripsAdapter tripsAdapter;
     @Override
@@ -42,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         tripsAdapter.setOnTripListener(new OnTripListener() {
             @Override
             public void onTripClick(Trip trip) {
-
+                homeViewModel.navigateToTripDetails(trip.getId());
             }
 
             @Override
@@ -62,6 +63,17 @@ public class MainActivity extends AppCompatActivity {
 
                 tripsAdapter.setTripList(trips);
 
+            }
+        });
+
+        homeViewModel.tripIdLiveData.observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                if(integer != -1) {
+                    Intent intent = new Intent(MainActivity.this, EditTripActivity.class);
+                    intent.putExtra(TRIP_ID, integer);
+                    startActivity(intent);
+                }
             }
         });
 

@@ -4,15 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".trip.create.view.AddTripActivity">
+    tools:context=".trip.edit.view.EditTripActivity">
 
 
     <!--    android:name="com.iti.gov.mashawery.trip.create.view.TripInfoFragment"-->
 
     <LinearLayout
         android:id="@+id/linearLayout2"
-        android:layout_width="407dp"
-        android:layout_height="129dp"
+        android:layout_width="423dp"
+        android:layout_height="127dp"
         android:background="@drawable/rounded_bottom_corners"
         android:elevation="6dp"
         android:orientation="horizontal"
@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:text="@string/tvCreateNewTip"
+            android:text="@string/edit_trip"
             android:textColor="@color/orange_color"
             android:textSize="32sp"
             android:textStyle="bold" />
@@ -43,17 +43,16 @@
     </LinearLayout>
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/container"
-        android:layout_width="391dp"
-        android:layout_height="531dp"
+        android:id="@+id/editTripContainer"
+        android:layout_width="388dp"
+        android:layout_height="536dp"
         android:layout_gravity="center_horizontal|center_vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-        app:layout_constraintVertical_bias="0.255" />
-
+        app:layout_constraintVertical_bias="0.303" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

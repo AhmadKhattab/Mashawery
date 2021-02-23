@@ -1,27 +1,18 @@
-package com.iti.gov.mashawery.trip.view;
+package com.iti.gov.mashawery.trip.create.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Pair;
-import android.view.View;
-import android.widget.Toast;
 
-import com.google.android.gms.common.FirstPartyScopes;
 import com.iti.gov.mashawery.R;
 import com.iti.gov.mashawery.databinding.ActivityAddTripBinding;
-import com.iti.gov.mashawery.home.view.MainActivity;
 import com.iti.gov.mashawery.model.repository.TripsRepo;
 import com.iti.gov.mashawery.model.repository.TripsRepoInterface;
-import com.iti.gov.mashawery.trip.viewmodel.TripViewModel;
+import com.iti.gov.mashawery.trip.create.viewmodel.TripViewModel;
 
 public class AddTripActivity extends AppCompatActivity {
     ActivityAddTripBinding binding;

@@ -1,4 +1,4 @@
-package com.iti.gov.mashawery.trip.viewmodel;
+package com.iti.gov.mashawery.trip.create.viewmodel;
 
 
 import androidx.lifecycle.MutableLiveData;

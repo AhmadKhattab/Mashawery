@@ -5,7 +5,7 @@
     android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".trip.view.TimePickers">
+    tools:context=".trip.create.view.TimePickers">
 
     <TextView
         android:id="@+id/textView2"

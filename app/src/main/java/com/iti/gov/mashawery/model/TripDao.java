@@ -19,12 +19,17 @@ public interface TripDao {
     @Query("select * from trips_table")
     Single<List<Trip>> getTrips();
 
-    @Query("select * from trips_table where status = 1 or status = 2")
+    @Query("Select * from trips_table Where id=:tripId")
+    Single<Trip> getTripById(int tripId);
+
+    @Query("select * from trips_table Where status = 1 or status = 2")
     Single<List<Trip>> getHistory();
 
-    @Query("Delete from trips_table WHERE id=:tripId")
+    @Query("Delete from trips_table Where id=:tripId")
     Completable removeTrip(int tripId);
 
     @Update
-    Comparable updateTrip(Trip trip);
+    Completable updateTrip(Trip trip);
+
+
 }

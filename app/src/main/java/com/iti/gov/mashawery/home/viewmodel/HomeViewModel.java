@@ -1,6 +1,7 @@
 package com.iti.gov.mashawery.home.viewmodel;
 
 import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
 import com.iti.gov.mashawery.model.Trip;
@@ -13,11 +14,15 @@ public class HomeViewModel {
 
     private TripsRepoInterface tripsRepoInterface;
     public MediatorLiveData<List<Trip>> tripListLiveData;
+    public MutableLiveData<Integer> tripIdLiveData;
 
     {
 
         tripListLiveData = new MediatorLiveData<>();
         tripListLiveData.setValue(new ArrayList<>());
+
+        tripIdLiveData = new MutableLiveData<>();
+        tripIdLiveData.setValue(-1);
 
     }
 
@@ -39,5 +44,9 @@ public class HomeViewModel {
     public void removeTrip(int id) {
 
         tripsRepoInterface.removeTrip(id);
+    }
+
+    public void navigateToTripDetails(int id) {
+        tripIdLiveData.setValue(id);
     }
 }

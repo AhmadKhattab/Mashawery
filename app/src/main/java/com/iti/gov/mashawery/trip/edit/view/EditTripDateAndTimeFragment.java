@@ -1,4 +1,4 @@
-package com.iti.gov.mashawery.trip.view;
+package com.iti.gov.mashawery.trip.edit.view;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -14,7 +14,6 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,20 +22,20 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.iti.gov.mashawery.R;
-import com.iti.gov.mashawery.databinding.FragmentDateAndTimeBinding;
-import com.iti.gov.mashawery.trip.viewmodel.TripViewModel;
+import com.iti.gov.mashawery.databinding.FragmentEditTripDateAndTimeBinding;
+import com.iti.gov.mashawery.trip.create.view.AddNotesFragment;
+import com.iti.gov.mashawery.trip.edit.viewmodel.EditTripViewModel;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeParseException;
 import java.util.Calendar;
 import java.util.Date;
 
 
-public class DateAndTimeFragment extends Fragment {
+public class EditTripDateAndTimeFragment extends Fragment {
 
-    FragmentDateAndTimeBinding binding;
-    TripViewModel tripViewModel;
+    FragmentEditTripDateAndTimeBinding binding;
+    EditTripViewModel editTripViewModel;
     DatePickerDialog.OnDateSetListener onDateSetListener;
 
     int hour, min;
@@ -52,13 +51,13 @@ public class DateAndTimeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        return inflater.inflate(R.layout.fragment_date_and_time, container, false);
+        return inflater.inflate(R.layout.fragment_edit_trip_date_and_time, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        binding = FragmentDateAndTimeBinding.bind(view);
+        binding = FragmentEditTripDateAndTimeBinding.bind(view);
 
         Calendar calendar = Calendar.getInstance();
         final int year = calendar.get(Calendar.YEAR);
@@ -145,38 +144,48 @@ public class DateAndTimeFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        tripViewModel = ViewModelProviders.of(getActivity()).get(TripViewModel.class);
-        tripViewModel.addNotesFlag.observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+        //Declare EditTripViewModel
+        editTripViewModel = ViewModelProviders.of(getActivity()).get(EditTripViewModel.class);
+
+        //Initialize date and time
+        binding.tvDate.setText(editTripViewModel.tripLiveData.getValue().getDate());
+        binding.tvTime.setText(editTripViewModel.tripLiveData.getValue().getTime());
+
+        editTripViewModel.editNotesFlag.observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean flag) {
                 if (flag) {
                     String date = binding.tvDate.getText().toString();
                     String time = binding.tvTime.getText().toString();
-                    tripViewModel.updateTripTime(date, time);
-                    openAddNotesFragment();
-                    tripViewModel.completeNavigateToAddNotes();
+                    editTripViewModel.updateTripTime(date, time);
+                    openEditNotesFragment();
+                    editTripViewModel.completeNavigateToAddNotes();
                 }
             }
         });
+
+
         binding.btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 if (!(binding.tvDate.getText().toString().equals("Select Date"))
                         && !(binding.tvTime.getText().toString().equals("Select Time"))) {
-                    tripViewModel.navigateToAddNotes();
+                    editTripViewModel.navigateToEditNotes();
                 } else {
                     Toast.makeText(getActivity(), "Please fill all fields", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+
+
     }
 
-    private void openAddNotesFragment() {
-        AddNotesFragment addNotesFragment = new AddNotesFragment();
+    private void openEditNotesFragment() {
+        EditTripNotesFragment editTripNotesFragment = new EditTripNotesFragment();
         FragmentManager manager = getActivity().getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
-        transaction.replace(R.id.container, addNotesFragment, "notes_fragment")
+        transaction.replace(R.id.editTripContainer, editTripNotesFragment, null)
                 .addToBackStack("notes_fragment");
         transaction.commit();
 

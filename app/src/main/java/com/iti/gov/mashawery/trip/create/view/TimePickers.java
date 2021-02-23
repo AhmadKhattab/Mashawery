@@ -1,4 +1,4 @@
-package com.iti.gov.mashawery.trip.view;
+package com.iti.gov.mashawery.trip.create.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 

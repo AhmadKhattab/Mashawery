@@ -1,4 +1,4 @@
-package com.iti.gov.mashawery.trip.view;
+package com.iti.gov.mashawery.trip.create.view;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -13,7 +13,6 @@ import com.iti.gov.mashawery.databinding.NoteItemBinding;
 import com.iti.gov.mashawery.model.Note;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHolder> {
