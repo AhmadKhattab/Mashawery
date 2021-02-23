@@ -22,6 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.iti.gov.mashawery.R;
 import com.iti.gov.mashawery.databinding.ActivityRegisterBinding;
 import com.iti.gov.mashawery.home.view.MainActivity;
+import com.iti.gov.mashawery.home.view.MaineActivity;
 import com.iti.gov.mashawery.localStorage.SharedPref;
 import com.iti.gov.mashawery.model.User;
 
@@ -122,7 +123,8 @@ public class RegisterActivity extends AppCompatActivity {
         boolean isLogin =SharedPref.checkLogin();
         //
         if(isLogin) {
-            Intent intent = new Intent(this, MainActivity.class);
+           // Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(this, MaineActivity.class);
             startActivity(intent);
             finish();
         }else {

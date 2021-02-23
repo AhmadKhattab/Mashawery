@@ -9,7 +9,7 @@
     android:background="#FFFFFF"
     android:orientation="vertical"
     android:weightSum="9"
-    tools:context=".HistoryActivity">
+    tools:context=".history.view.HistoryActivity">
 
     <LinearLayout
         android:id="@+id/headerLinearLayout"
@@ -50,7 +50,7 @@
     <LinearLayout
         android:id="@+id/MedLinearLayoit"
         android:layout_width="match_parent"
-        android:layout_height="149dp"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical">
 
@@ -58,54 +58,33 @@
             android:layout_width="match_parent"
             android:layout_height="92dp">
 
-            <EditText
-                android:id="@+id/etSearchHistory"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:background="@drawable/custom_border_input"
-                android:ems="10"
-                android:hint="@string/etSearchHistory"
-                android:inputType="textPersonName"
-                android:paddingLeft="10dp"
-                app:layout_constraintBottom_toTopOf="@+id/tvCancel"
-                app:layout_constraintEnd_toStartOf="@+id/ivSearchHistory"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/ivSearchHistory"
-                android:layout_width="30dp"
-                android:layout_height="24dp"
-                android:layout_marginEnd="16dp"
-                android:clickable="true"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/etSearchHistory"
-                app:srcCompat="@drawable/icon_search" />
-
             <Button
                 android:id="@+id/btnDone"
                 android:layout_width="55dp"
                 android:layout_height="25dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginBottom="5dp"
                 android:text="Button"
                 app:backgroundTint="@color/orange"
                 app:elevation="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.079"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.492" />
 
             <Button
                 android:id="@+id/btnCancel"
                 android:layout_width="55dp"
                 android:layout_height="25dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginBottom="5dp"
                 app:backgroundTint="@color/dark_blue"
                 app:elevation="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/btnDone" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.038"
+                app:layout_constraintStart_toEndOf="@+id/btnDone"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.507" />
 
             <TextView
                 android:id="@+id/tvDone"
@@ -140,11 +119,16 @@
             android:layout_height="match_parent">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:layout_editor_absoluteX="212dp"
-                tools:layout_editor_absoluteY="84dp" />
+                android:id="@+id/historyRecycler"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.473"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.303" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fbViewPrevPlaces"

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:context=".home.view.MainActivity"
     >
 
     <LinearLayout
@@ -22,16 +23,33 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/tripRecycler"
-        android:layout_width="414dp"
-        android:layout_height="561dp"
+        android:layout_width="392dp"
+        android:layout_height="469dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.304"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/menue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:fab_addButtonColorNormal="#2767C2 "
+        app:fab_addButtonColorPressed="#85B3F5 "
+        app:fab_addButtonPlusIconColor="@color/white"
+        app:fab_labelStyle="@style/custum_fab"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tripRecycler"
+        app:layout_constraintVertical_bias="1.0">
+
+
+        <!-- <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab1"
         android:layout_width="55dp"
         android:layout_height="89dp"
         android:layout_margin="16dp"
@@ -43,6 +61,40 @@
         app:layout_constraintHorizontal_bias="0.954"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.976" />
+        app:layout_constraintVertical_bias="0.976" /> !-->
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="#A4C1FB"
+            app:fab_icon="@drawable/ic_add"
+            app:fab_size="mini"
+            app:fab_title="Add Trip"
+            ></com.getbase.floatingactionbutton.FloatingActionButton>
+
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="#A4C1FB"
+            app:fab_icon="@drawable/ic_account"
+            app:fab_size="mini"
+            app:fab_title="profile"
+
+
+           ></com.getbase.floatingactionbutton.FloatingActionButton>
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="#A4C1FB"
+            app:fab_icon="@drawable/ic_baseline_history_24"
+            app:fab_size="mini"
+            app:fab_title="History"
+
+
+            ></com.getbase.floatingactionbutton.FloatingActionButton>
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
