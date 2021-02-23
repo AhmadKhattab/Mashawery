@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Profile.ProfileFragment">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="406dp"
+        android:layout_height="153dp"
+        android:background="@drawable/header"
+        android:elevation="20dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.333"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" >
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/ivTripLogo"
+                android:layout_width="117dp"
+                android:layout_height="112dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.333"
+                app:srcCompat="@drawable/human_rouned_image" />
+
+            <TextView
+                android:id="@+id/tvNewTripNotes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="48dp"
+                android:text="Profile"
+                android:textColor="#306BC2"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/ivTripLogo"
+                app:layout_constraintStart_toEndOf="@+id/ivTripLogo"
+                app:layout_constraintTop_toTopOf="@+id/ivTripLogo"
+                app:layout_constraintVertical_bias="0.583" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toBottomOf="@id/linearLayout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:padding="8dp"
+        android:layout_marginTop="32dp">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:gravity="start"
+                android:paddingStart="16dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="8dp"
+                android:text="email"
+                android:textAllCaps="false"
+                android:textColor="#2466EA "
+                app:backgroundTint="#93BCF7 "
+                app:icon="@drawable/ic_email_24"
+                app:iconGravity="start"
+                app:iconPadding="4dp"
+                app:iconTint="#306BC2 "
+                android:background="@drawable/background_btn_login"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_sync"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/background_btn_login"
+                android:gravity="start"
+                android:paddingStart="16dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="8dp"
+                android:text="sync"
+                android:textAllCaps="false"
+                android:textColor="#2466EA "
+                app:backgroundTint="#93BCF7 "
+                app:icon="@drawable/ic_baseline_send_24"
+                app:iconGravity="start"
+                app:iconPadding="4dp"
+                app:iconTint="#306BC2 "
+                app:layout_constraintTop_toBottomOf="@+id/btn_email" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_logout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/background_btn_login"
+                android:gravity="start"
+                android:paddingStart="16dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="8dp"
+                android:text="logout"
+                android:textAllCaps="false"
+                android:textColor="#2466EA "
+                app:backgroundTint="#93BCF7 "
+                app:icon="@drawable/ic_baseline_login_24"
+                app:iconGravity="start"
+                app:iconPadding="4dp"
+                app:iconTint="#306BC2 "
+                app:layout_constraintTop_toBottomOf="@+id/btn_sync" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

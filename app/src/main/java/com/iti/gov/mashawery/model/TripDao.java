@@ -31,5 +31,4 @@ public interface TripDao {
     @Update
     Completable updateTrip(Trip trip);
 
-
 }

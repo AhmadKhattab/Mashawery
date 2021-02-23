@@ -66,6 +66,7 @@ public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.TripsViewHol
             @Override
             public void onClick(View v) {
                 onTripListener.onTripStart(currentTrip);
+
             }
         });
 
@@ -91,4 +92,8 @@ public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.TripsViewHol
             binding = TripItemRowBinding.bind(itemView);
         }
     }
+
+
+
+
 }

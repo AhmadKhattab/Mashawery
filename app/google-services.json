@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "93680279063",
+    "project_id": "mashawery-5dae7",
+    "storage_bucket": "mashawery-5dae7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:93680279063:android:2dbcdb5c0a897ed7960652",
+        "android_client_info": {
+          "package_name": "com.iti.gov.mashawery"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "93680279063-cp4g4bp1253b0khlspjncc50rqj7r16l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfcS8ALXpopPSr1uK_ydEwfRolsCM7tws"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "93680279063-cp4g4bp1253b0khlspjncc50rqj7r16l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
