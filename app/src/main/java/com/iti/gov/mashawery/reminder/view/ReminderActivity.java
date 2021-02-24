@@ -12,36 +12,50 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Window;
 
+import com.google.gson.Gson;
 import com.iti.gov.mashawery.R;
+import com.iti.gov.mashawery.home.view.MainActivity;
+import com.iti.gov.mashawery.home.viewmodel.HomeViewModel;
 import com.iti.gov.mashawery.model.Trip;
+import com.iti.gov.mashawery.model.repository.TripsRepo;
+import com.iti.gov.mashawery.model.repository.TripsRepoInterface;
 
 public class ReminderActivity extends AppCompatActivity {
 
+
     private static final String CHANNEL_ID = "CHANNEL_ID";
     private static final int NOTIFICATION_ID = 1234;
-    private static AudioManager audioManager;
+    //private static AudioManager audioManager;
+
+
+    HomeViewModel reminderViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+
         //Trip incomingTrip = (Trip) getIntent().getExtras(TripAlarm.TRIP_TAG);
+
+        Trip incomingTrip = (Trip) new Gson().fromJson(getIntent().getStringExtra(TripAlarm.TRIP_TAG), Trip.class);
+
         // Create the object of
         // AlertDialog Builder class
-        audioManager = (AudioManager) getBaseContext().getSystemService(Context.AUDIO_SERVICE);
+        //audioManager = (AudioManager) getBaseContext().getSystemService(Context.AUDIO_SERVICE);
         AlertDialog.Builder builder = new AlertDialog.Builder(ReminderActivity.this);
-        final int i= audioManager.getRingerMode();
-        audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-        final MediaPlayer mediaPlayer = MediaPlayer.create(getBaseContext(), R.raw.ringing);
+        //final int i= audioManager.getRingerMode();
+        //audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+        /*final MediaPlayer mediaPlayer = MediaPlayer.create(getBaseContext(), R.raw.ringing);
         mediaPlayer.setLooping(true);
-        mediaPlayer.setVolume(100,100);
+        mediaPlayer.setVolume(100,100);*/
 
         // Set the message show for the Alert time
-        builder.setMessage("Remember your trip,");
+        builder.setMessage("Remember your trip, " + incomingTrip.getName());
 
         // Set Alert Title
         builder.setTitle("Mashawery !");
@@ -54,20 +68,33 @@ public class ReminderActivity extends AppCompatActivity {
         // Set the positive button with yes name
         // OnClickListener method is use of
         // DialogInterface interface.
+        TripsRepoInterface tripsRepoInterface = new TripsRepo(this);
 
-        builder.setPositiveButton("Yes",
+        reminderViewModel = new HomeViewModel();
+        reminderViewModel.setTripsRepoInterface(tripsRepoInterface);
+
+
+        builder.setPositiveButton("Start",
                 new DialogInterface.OnClickListener() {
 
                     @Override
                     public void onClick(DialogInterface dialog,
                                         int which) {
 
-                        // When the user click yes button
+                        // When the user click Start button
                         // then app will close
-                        if(mediaPlayer.isPlaying()){
+                      /*  if(mediaPlayer.isPlaying()){
                             mediaPlayer.stop();
                             mediaPlayer.release();
-                        }
+                        }*/
+                        TripAlarm.cancelAlarm(ReminderActivity.this, incomingTrip.getId());
+                        incomingTrip.setStatus(MainActivity.STATUS_DONE);
+                        reminderViewModel.updateTripInDB(incomingTrip);
+                        Uri gmmIntentUri = Uri.parse("http://maps.google.com/maps?daddr=" + incomingTrip.getEndPoint());
+                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                        mapIntent.setPackage("com.google.android.apps.maps");
+                        startActivity(mapIntent);
+
                         finish();
                     }
                 });
@@ -76,7 +103,7 @@ public class ReminderActivity extends AppCompatActivity {
         // OnClickListener method is use
         // of DialogInterface interface.
         builder.setNegativeButton(
-                "No",
+                "Cancel",
                 new DialogInterface
                         .OnClickListener() {
 
@@ -86,21 +113,30 @@ public class ReminderActivity extends AppCompatActivity {
 
                         // If user click no
                         // then dialog box is canceled.
-                        if(mediaPlayer.isPlaying()){
+
+                       /* if(mediaPlayer.isPlaying()){
                             mediaPlayer.stop();
                             mediaPlayer.release();
-                        }
+                        }*/
                         dialog.cancel();
+                        TripAlarm.cancelAlarm(ReminderActivity.this, incomingTrip.getId());
+
+                        incomingTrip.setStatus(MainActivity.STATUS_CANCEL);
+                        reminderViewModel.updateTripInDB(incomingTrip);
+
+
+                        finish();
+
                     }
                 });
 
         builder.setNeutralButton("Snooze", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if(mediaPlayer.isPlaying()){
+                /*if(mediaPlayer.isPlaying()){
                     mediaPlayer.stop();
                     mediaPlayer.release();
-                }
+                }*/
                 finish();
                 showNotification();
             }
@@ -111,7 +147,7 @@ public class ReminderActivity extends AppCompatActivity {
 
         // Show the Alert Dialog box
         alertDialog.show();
-        mediaPlayer.start();
+       // mediaPlayer.start();
 
     }
 

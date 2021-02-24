@@ -29,6 +29,7 @@ import com.iti.gov.mashawery.model.Trip;
 import com.iti.gov.mashawery.model.repository.TripsRepo;
 import com.iti.gov.mashawery.model.repository.TripsRepoInterface;
 
+import com.iti.gov.mashawery.reminder.view.TripAlarm;
 import com.iti.gov.mashawery.trip.create.view.AddTripActivity;
 import com.iti.gov.mashawery.trip.edit.view.EditTripActivity;
 
@@ -39,6 +40,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     public static final String TRIP_ID = "TRIP_ID";
     public static final int STATUS_DONE = 2;
+    public static final int STATUS_CANCEL = 1;
     ActivityMainBinding binding;
     TripsAdapter tripsAdapter;
     HomeViewModel homeViewModel;
@@ -76,11 +78,13 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTripDelete(Trip trip) {
+                TripAlarm.cancelAlarm(MainActivity.this, trip.getId());
                 homeViewModel.removeTrip(trip.getId());
             }
 
             @Override
             public void onTripStart(Trip trip) {
+                TripAlarm.cancelAlarm(MainActivity.this, trip.getId());
                 trip.setStatus(STATUS_DONE);
                 homeViewModel.updateTripInDB(trip);
                 Uri gmmIntentUri = Uri.parse("http://maps.google.com/maps?daddr=" + trip.getEndPoint());
