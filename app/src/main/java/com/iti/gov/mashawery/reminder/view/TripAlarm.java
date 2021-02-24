@@ -57,8 +57,10 @@ public class TripAlarm {
     public static void cancelAlarm(Context context, int requestCode) {
         Intent alarmIntent = new Intent(context, TripReminderReceiver.class);
         PendingIntent pendingIntentForCancel = PendingIntent.getBroadcast(context, requestCode, alarmIntent, 0);
-        alarmManager.cancel(pendingIntentForCancel);
-        Toast.makeText(context, "Alarm Cancelled", Toast.LENGTH_LONG).show();
+        if(pendingIntentForCancel != null) {
+            alarmManager.cancel(pendingIntentForCancel);
+            Toast.makeText(context, "Alarm Cancelled", Toast.LENGTH_LONG).show();
+        }
     }
 
 

@@ -171,7 +171,7 @@ public class AddNotesFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 SharedPref.createPrefObject(getActivity());
-                tripViewModel.setTripId((int)Calendar.getInstance().getTimeInMillis());
+                tripViewModel.setTripId(Math.abs((int)Calendar.getInstance().getTimeInMillis()));
                 tripViewModel.triggerTrip();
                 TripAlarm.setAlarm(newTrip,getActivity());
                 String currentUserId = SharedPref.getCurrentUserId();
