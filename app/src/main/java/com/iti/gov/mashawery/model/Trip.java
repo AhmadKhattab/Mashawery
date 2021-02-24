@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 
 @Entity(tableName = "trips_table")
-public class Trip implements Serializable {
+public class Trip  {
 
     @PrimaryKey(autoGenerate = true)
     private int id;

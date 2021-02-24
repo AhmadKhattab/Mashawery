@@ -1,18 +1,13 @@
 package com.iti.gov.mashawery.trip.create.view;
 
-import android.app.AlarmManager;
 import android.app.Dialog;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -22,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.iti.gov.mashawery.R;
 
@@ -33,7 +27,6 @@ import com.iti.gov.mashawery.localStorage.SharedPref;
 import com.iti.gov.mashawery.model.Note;
 import com.iti.gov.mashawery.model.Trip;
 import com.iti.gov.mashawery.reminder.view.TripAlarm;
-import com.iti.gov.mashawery.reminder.view.TripReminderReciever;
 import com.iti.gov.mashawery.trip.create.viewmodel.TripViewModel;
 
 import java.util.Calendar;
@@ -46,6 +39,7 @@ public class AddNotesFragment extends Fragment {
     TripViewModel tripViewModel;
     NotesAdapter notesAdapter;
     Dialog dialog;
+    Trip newTrip = new Trip();
 
 
     Note currentNote;
@@ -178,13 +172,23 @@ public class AddNotesFragment extends Fragment {
             public void onClick(View v) {
                 SharedPref.createPrefObject(getActivity());
                 tripViewModel.setTripId((int)Calendar.getInstance().getTimeInMillis());
-                TripAlarm.setAlarm(tripViewModel.tripLiveData.getValue(),getActivity());
+                tripViewModel.triggerTrip();
+                TripAlarm.setAlarm(newTrip,getActivity());
                 String currentUserId = SharedPref.getCurrentUserId();
                 tripViewModel.setUserId(currentUserId);
                 tripViewModel.insertTrip();
                 tripViewModel.creationCompleted();
             }
         });
+
+        tripViewModel.tripLiveData.observe(getActivity(), new Observer<Trip>() {
+            @Override
+            public void onChanged(Trip trip) {
+                newTrip = trip;
+            }
+        });
+
+
 
 
 

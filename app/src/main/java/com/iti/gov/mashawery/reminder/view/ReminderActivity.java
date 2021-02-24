@@ -15,15 +15,16 @@ public class ReminderActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
-        Trip incomingTrip = (Trip) getIntent().getSerializableExtra(TripAlarm.TRIP_TAG);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        //Trip incomingTrip = (Trip) getIntent().getExtras(TripAlarm.TRIP_TAG);
         // Create the object of
         // AlertDialog Builder class
         AlertDialog.Builder builder = new AlertDialog.Builder(ReminderActivity.this);
 
         // Set the message show for the Alert time
-        builder.setMessage("Remember your trip, "+ incomingTrip.getName());
+        builder.setMessage("Remember your trip,");
 
         // Set Alert Title
         builder.setTitle("Mashawery !");
@@ -67,6 +68,13 @@ public class ReminderActivity extends AppCompatActivity {
                         dialog.cancel();
                     }
                 });
+
+        builder.setNeutralButton("Snooze", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
 
         // Create the Alert dialog
         AlertDialog alertDialog = builder.create();

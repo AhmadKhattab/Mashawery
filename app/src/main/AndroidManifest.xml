@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.ACTION_MANAGE_OVERLAY_PERMISSION"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -16,7 +17,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Mashawery">
         <activity android:name=".reminder.view.ReminderActivity"
-            android:theme="@style/Theme.AppCompat.DayNight.Dialog.Alert"></activity>
+            android:theme="@style/Theme.AppCompat.Light.Dialog.Alert"
+            android:excludeFromRecents="false"
+            android:launchMode="singleTask"
+            android:taskAffinity=""/>
+
         <activity android:name=".trip.edit.view.EditTripActivity" />
         <activity android:name=".history.view.HistoryActivity" />
         <activity android:name=".trip.create.view.TimePickers" />
@@ -28,13 +33,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".trip.create.view.AddTripActivity"></activity>
-        <activity android:name=".home.view.MaineActivity"></activity>
-        <activity android:name=".home.view.MainActivity"></activity>
+        <activity android:name=".trip.create.view.AddTripActivity"/>
+        <activity android:name=".home.view.MaineActivity"/>
+        <activity android:name=".home.view.MainActivity"/>
         <receiver
-            android:name=".reminder.view.TripReminderReciever"
+            android:name=".reminder.view.TripReminderReceiver"
             android:directBootAware="true"
-            android:process=":remote"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -43,5 +47,6 @@
             </intent-filter>
         </receiver>
     </application>
+    <!--            android:process=":remote"-->
 
 </manifest>

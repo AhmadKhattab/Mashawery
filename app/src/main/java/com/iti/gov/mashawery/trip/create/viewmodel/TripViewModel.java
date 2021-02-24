@@ -147,4 +147,9 @@ public class TripViewModel extends ViewModel {
     public void setTripId(int tripId) {
         tripLiveData.getValue().setId(tripId);
     }
+
+    public void triggerTrip() {
+
+        tripLiveData.setValue(tripLiveData.getValue());
+    }
 }
