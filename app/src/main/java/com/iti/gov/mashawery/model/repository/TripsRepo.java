@@ -185,4 +185,5 @@ public class TripsRepo implements TripsRepoInterface {
                 });
 
     }
+    public MutableLiveData<Trip> getAllTripsForFirebase() { return tripLiveData; }
 }

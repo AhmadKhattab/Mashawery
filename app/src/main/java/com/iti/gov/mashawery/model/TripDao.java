@@ -16,7 +16,7 @@ public interface TripDao {
     @Insert
     Completable insertTrip(Trip trip);
 
-    @Query("select * from trips_table")
+    @Query("select * from trips_table ")
     Single<List<Trip>> getTrips();
 
     @Query("Select * from trips_table Where id=:tripId")

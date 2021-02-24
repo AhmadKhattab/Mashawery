@@ -124,13 +124,13 @@ public class RegisterActivity extends AppCompatActivity {
         //
         if(isLogin) {
            // Intent intent = new Intent(this, MainActivity.class);
-            Intent intent = new Intent(this, MaineActivity.class);
+            Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
         }else {
-            Intent intent = new Intent(this, LoginActivity.class);
+           /* Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
-            finish();
+            finish();*/
         }
     }
 
