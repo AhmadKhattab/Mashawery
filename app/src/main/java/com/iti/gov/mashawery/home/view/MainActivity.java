@@ -144,6 +144,9 @@ public class MainActivity extends AppCompatActivity {
                         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                         mapIntent.setPackage("com.google.android.apps.maps");
                         startActivity(mapIntent);
+                        TripAlarm.cancelAlarm(MainActivity.this, trip.getId());
+                        trip.setStatus(STATUS_DONE);
+                        homeViewModel.updateTripInDB(trip);
                         Intent intent = new Intent(MainActivity.this, FloatingViewService.class);
                         intent.putExtra("tripList", new Gson().toJson(trip.getNoteList().getNoteList()));
                         //  SharedPref.setFloatingNotes(floatingNote.get(0).getTitle());
