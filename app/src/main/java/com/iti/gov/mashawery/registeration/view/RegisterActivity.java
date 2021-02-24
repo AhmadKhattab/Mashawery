@@ -121,7 +121,7 @@ public class RegisterActivity extends AppCompatActivity {
         super.onStart();
         SharedPref.createPrefObject(RegisterActivity.this);
         boolean isLogin =SharedPref.checkLogin();
-        //
+
         if(isLogin) {
            // Intent intent = new Intent(this, MainActivity.class);
             Intent intent = new Intent(this, MainActivity.class);

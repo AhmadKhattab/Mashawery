@@ -49,4 +49,8 @@ public class HomeViewModel {
     public void navigateToTripDetails(int id) {
         tripIdLiveData.setValue(id);
     }
+
+    public void updateTripInDB(Trip trip) {
+        tripsRepoInterface.updateTrip(trip);
+    }
 }

@@ -23,7 +23,10 @@ import com.iti.gov.mashawery.databinding.FragmentAddNotesBinding;
 import com.iti.gov.mashawery.databinding.FragmentEditTripNotesBinding;
 import com.iti.gov.mashawery.databinding.InsertNewNoteBinding;
 import com.iti.gov.mashawery.home.view.MainActivity;
+import com.iti.gov.mashawery.localStorage.SharedPref;
 import com.iti.gov.mashawery.model.Note;
+import com.iti.gov.mashawery.model.Trip;
+import com.iti.gov.mashawery.reminder.view.TripAlarm;
 import com.iti.gov.mashawery.trip.create.view.NoteListenerInterface;
 import com.iti.gov.mashawery.trip.create.view.NotesAdapter;
 import com.iti.gov.mashawery.trip.create.viewmodel.TripViewModel;
@@ -39,7 +42,7 @@ public class EditTripNotesFragment extends Fragment {
     EditTripViewModel editTripViewModel;
     NotesAdapter notesAdapter;
     Dialog dialog;
-
+    Trip newTrip = new Trip();
     Note currentNote;
 
 
@@ -172,8 +175,18 @@ public class EditTripNotesFragment extends Fragment {
         binding.btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                editTripViewModel.triggerTrip();
+                TripAlarm.setAlarm(newTrip,getActivity());
+                String currentUserId = SharedPref.getCurrentUserId();
                 editTripViewModel.updateTripInDB();
                 editTripViewModel.creationCompleted();
+            }
+        });
+
+        editTripViewModel.tripLiveData.observe(getActivity(), new Observer<Trip>() {
+            @Override
+            public void onChanged(Trip trip) {
+                newTrip = trip;
             }
         });
 

@@ -13,7 +13,13 @@ public class SharedPref {
 
     public static SharedPreferences createPrefObject(Context context){
         if(pref == null){
-            pref = context.getSharedPreferences("Trip",MODE_PRIVATE);
+            synchronized (SharedPref.class) {
+                if (pref == null) {
+
+                    pref = context.getSharedPreferences("Trip",MODE_PRIVATE);
+
+                }
+            }
         }
         return pref;
     }
@@ -83,4 +89,20 @@ public class SharedPref {
     public static Boolean checkLoginWithFirebase(){
         return  pref.getBoolean("login-firebase",false);
     }
+
+    public static void setUserId(String userID) {
+
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("user_id",userID);
+        editor.apply();
+
+    }
+
+    public static String getCurrentUserId() {
+
+        return  pref.getString("user_id","default_user");
+
+    }
+
+
 }

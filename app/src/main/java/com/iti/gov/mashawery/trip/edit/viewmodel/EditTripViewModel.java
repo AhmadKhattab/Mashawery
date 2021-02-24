@@ -136,4 +136,9 @@ public class EditTripViewModel extends ViewModel {
     public void updateTripInDB() {
         tripsRepoInterface.updateTrip(tripLiveData.getValue());
     }
+
+    public void triggerTrip() {
+
+        tripLiveData.setValue(tripLiveData.getValue());
+    }
 }
