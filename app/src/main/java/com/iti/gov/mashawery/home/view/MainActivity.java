@@ -7,6 +7,7 @@ import androidx.appcompat.app.AlertDialog;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,6 +18,8 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.LocationManager;
 
 import android.content.ComponentName;
@@ -28,6 +31,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
@@ -35,6 +39,8 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.iti.gov.mashawery.R;
 import com.iti.gov.mashawery.databinding.ActivityMainBinding;
+import com.iti.gov.mashawery.databinding.DeleteConfirmationDialogBinding;
+import com.iti.gov.mashawery.databinding.InsertNewNoteBinding;
 import com.iti.gov.mashawery.helpPackag.FloatingViewService;
 import com.iti.gov.mashawery.localStorage.SharedPref;
 import com.iti.gov.mashawery.model.Note;
@@ -60,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
     public static final int STATUS_DONE = 2;
     public static final int STATUS_CANCEL = 1;
     ActivityMainBinding binding;
+    DeleteConfirmationDialogBinding deleteConfirmationDialogBinding;
     TripsAdapter tripsAdapter;
 
     private static final int CODE_DRAW_OVER_OTHER_APP_PERMISSION = 2084;
@@ -96,8 +103,13 @@ public class MainActivity extends AppCompatActivity {
 
         homeViewModel = new HomeViewModel();
         homeViewModel.setTripsRepoInterface(tripsRepoInterface);
-        homeViewModel.getTrips();
 
+
+        //Set the current user id to home view model
+        SharedPref.createPrefObject(this);
+        homeViewModel.setCurrentUserId(SharedPref.getCurrentUserId());
+
+        homeViewModel.getTrips();
 
         tripsAdapter.setOnTripListener(new OnTripListener() {
             @Override
@@ -107,75 +119,15 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTripDelete(Trip trip) {
-                TripAlarm.cancelAlarm(MainActivity.this, trip.getId());
-                homeViewModel.removeTrip(trip.getId());
+                showDeleteTripConfirmationDialog(trip);
+//                TripAlarm.cancelAlarm(MainActivity.this, trip.getId());
+//                homeViewModel.removeTrip(trip.getId());
             }
 
             @Override
+            public void onTripStart(Trip trip){}
 
-            public void onTripStart(Trip trip) {
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    if (!Settings.canDrawOverlays(MainActivity.this)) {
-                        Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                                Uri.parse("package:" + getPackageName()));
-                        startActivityForResult(intent, CODE_DRAW_OVER_OTHER_APP_PERMISSION);
-                    } else {
-                        Intent intent = new Intent(MainActivity.this, FloatingViewService.class);
-                        intent.putExtra("tripList", new Gson().toJson(trip.getNoteList().getNoteList()));
-                        startService(intent);
-
-
-                    }
-                } else {
-
-                    Toast.makeText(MainActivity.this, "Your android version does not support this service", Toast.LENGTH_LONG).show();
-                }
-                //viewModel.updateTrip("Done", tripId);
-
-                //Uri gmmIntentUri = Uri.parse("google.navigation:q=" + address);
-                if (checkPermession()) {
-                    if (isLocationEnabled()) {
-                       /* Uri gmmIntentUri = Uri.parse("google.navigation:q=" + trip.getEndPoint());
-                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                        mapIntent.setPackage("com.google.android.apps.maps");
-                        startActivity(mapIntent);*/
-                        Uri gmmIntentUri = Uri.parse("http://maps.google.com/maps?daddr=" + trip.getEndPoint());
-                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                        mapIntent.setPackage("com.google.android.apps.maps");
-                        startActivity(mapIntent);
-                        TripAlarm.cancelAlarm(MainActivity.this, trip.getId());
-                        trip.setStatus(STATUS_DONE);
-                        homeViewModel.updateTripInDB(trip);
-                        Intent intent = new Intent(MainActivity.this, FloatingViewService.class);
-                        intent.putExtra("tripList", new Gson().toJson(trip.getNoteList().getNoteList()));
-                        //  SharedPref.setFloatingNotes(floatingNote.get(0).getTitle());
-
-                        startService(intent);
-
-                    } else {
-                        Toast.makeText(MainActivity.this, "Turn the Location on", Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                        startActivity(intent);
-                    }
-                } else {
-                    requestPermession();
-                }
-            }
         });
-
-//            public void onTripStart(Trip trip) {
-//                TripAlarm.cancelAlarm(MainActivity.this, trip.getId());
-//                trip.setStatus(STATUS_DONE);
-//                homeViewModel.updateTripInDB(trip);
-//                Uri gmmIntentUri = Uri.parse("http://maps.google.com/maps?daddr=" + trip.getEndPoint());
-//                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-//                mapIntent.setPackage("com.google.android.apps.maps");
-//                startActivity(mapIntent);
-//
-//
-//            }
-//        });
 
 
         homeViewModel.tripListLiveData.observe(this, new Observer<List<Trip>>() {
@@ -208,14 +160,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        binding.fab2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Intent intent = new Intent(MainActivity.this, MaineActivity.class);
-                Intent intent = new Intent(MainActivity.this, MaineActivity.class);
-                startActivity(intent);
-            }
-        });
+//        binding.fab2.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                //Intent intent = new Intent(MainActivity.this, MaineActivity.class);
+//                Intent intent = new Intent(MainActivity.this, MaineActivity.class);
+//                startActivity(intent);
+//            }
+//        });
         binding.fab3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -337,6 +289,40 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    private void showDeleteTripConfirmationDialog(Trip trip) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this,
+                R.style.AlertDialogTheme);
+
+//        View view = LayoutInflater.from(MainActivity.this).inflate(R.layout.insert_new_note,
+//                (CardView)findViewById(R.id.newNoteContainer));
+        deleteConfirmationDialogBinding = DeleteConfirmationDialogBinding.inflate(getLayoutInflater());
+        builder.setView(deleteConfirmationDialogBinding.getRoot());
+        AlertDialog deleteTripDialog = builder.create();
+        deleteTripDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        deleteConfirmationDialogBinding.btnConfirmDeletion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TripAlarm.cancelAlarm(MainActivity.this, trip.getId());
+                homeViewModel.removeTrip(trip.getId());
+                deleteTripDialog.dismiss();
+            }
+        });
+
+        deleteConfirmationDialogBinding.btnCancelDeletion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteTripDialog.dismiss();
+            }
+        });
+
+        deleteConfirmationDialogBinding.tvDeletionTitle.setText(R.string.delete_trip_title);
+        deleteConfirmationDialogBinding.tvDescription.setText(R.string.are_you_sure_to_delete_trip);
+
+
+        deleteTripDialog.show();
     }
 
 

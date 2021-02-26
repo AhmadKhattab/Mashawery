@@ -114,6 +114,7 @@
         app:layout_constraintVertical_bias="0.608">
 
         <RadioButton
+            android:id="@+id/rBtnNone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -127,6 +128,7 @@
             android:textColor="@drawable/color_selected" />
 
         <RadioButton
+            android:id="@+id/rBtnDaily"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -139,6 +141,7 @@
             android:textColor="@drawable/color_selected" />
 
         <RadioButton
+            android:id="@+id/rBtnWeekly"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -151,6 +154,7 @@
             android:textColor="@drawable/color_selected" />
 
         <RadioButton
+            android:id="@+id/rBtnMonthly"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -192,6 +196,7 @@
         app:layout_constraintVertical_bias="0.826">
 
         <RadioButton
+            android:id="@+id/rBtnOneWay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
@@ -203,6 +208,7 @@
             android:textColor="@drawable/color_selected" />
 
         <RadioButton
+            android:id="@+id/rBtnRoundTrip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/radio_selector"

@@ -139,6 +139,7 @@ public class TripInfoFragment extends Fragment {
                     trip.setType(selectedBtnFromType.getText().toString());
 
                     tripViewModel.updateTrip(trip);
+                    //tripViewModel.enableDateAndTimeFlag();
                     tripViewModel.navigateToDateTime();
                 } else {
 
@@ -146,6 +147,33 @@ public class TripInfoFragment extends Fragment {
                 }
             }
         });
+
+
+        if (tripViewModel.tripLiveData.getValue().getName() != null &&
+                tripViewModel.tripLiveData.getValue().getStartPoint() != null &&
+                tripViewModel.tripLiveData.getValue().getEndPoint() != null &&
+                tripViewModel.tripLiveData.getValue().getRepetition() != null &&
+                tripViewModel.tripLiveData.getValue().getType() != null) {
+
+            binding.etTripName.setText(tripViewModel.tripLiveData.getValue().getName());
+            binding.etTripStartPoint.setText(tripViewModel.tripLiveData.getValue().getStartPoint());
+            binding.etTripEndPoint.setText(tripViewModel.tripLiveData.getValue().getEndPoint());
+
+            int tripRepetitionSelectedBtnId = getIdOfRepetitionSelectedBtn(tripViewModel.tripLiveData.getValue().getRepetition());
+            int tripTypeSelectedBtnId = getIdOfTypeSelectedBtn(tripViewModel.tripLiveData.getValue().getType());
+
+            if(tripRepetitionSelectedBtnId != -1) {
+                binding.repetitionRaioGroup.check(tripRepetitionSelectedBtnId);
+
+            }
+
+            if (tripTypeSelectedBtnId != -1) {
+
+                binding.tripTypeRadioGroup.check(tripTypeSelectedBtnId);
+            }
+
+
+        }
     }
 
     private void openDateAndTimeFragment() {
@@ -184,7 +212,7 @@ public class TripInfoFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == REQUEST_CODE_START_POINT && resultCode == getActivity().RESULT_OK) {
+        if (requestCode == REQUEST_CODE_START_POINT && resultCode == getActivity().RESULT_OK) {
 
             //When success
             //Initialize place
@@ -194,7 +222,7 @@ public class TripInfoFragment extends Fragment {
             //Set address on EditText
             binding.etTripStartPoint.setText(place.getAddress());
 
-        } else if(resultCode == AutocompleteActivity.RESULT_ERROR) {
+        } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
 
             //When error
             //Initialize status
@@ -208,7 +236,7 @@ public class TripInfoFragment extends Fragment {
 
         }
 
-        if(requestCode == REQUEST_CODE_END_POINT && resultCode == getActivity().RESULT_OK) {
+        if (requestCode == REQUEST_CODE_END_POINT && resultCode == getActivity().RESULT_OK) {
 
             //When success
             //Initialize place
@@ -218,7 +246,7 @@ public class TripInfoFragment extends Fragment {
             //Set address on EditText
             binding.etTripEndPoint.setText(place.getAddress());
 
-        } else if(resultCode == AutocompleteActivity.RESULT_ERROR) {
+        } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
 
             //When error
             //Initialize status
@@ -231,5 +259,72 @@ public class TripInfoFragment extends Fragment {
 
 
         }
+    }
+
+    private int getIdOfRepetitionSelectedBtn(String tripRepetition) {
+
+        int id = -1;
+
+        String tripRepetitionNone = getActivity().getResources().getString(R.string.none);
+        String tripRepetitionDaily = getActivity().getResources().getString(R.string.daily);
+        String tripRepetitionWeekly = getActivity().getResources().getString(R.string.weekly);
+        String tripRepetitionMonthly = getActivity().getResources().getString(R.string.monthly);
+
+        RadioButton rBtnTripRepetition = null;
+
+
+        if (tripRepetitionNone.equals(tripRepetition)) {
+
+            rBtnTripRepetition = binding.rBtnNone;
+
+        } else if (tripRepetitionDaily.equals(tripRepetition)) {
+
+            rBtnTripRepetition = binding.rBtnDaily;
+
+        } else if (tripRepetitionWeekly.equals(tripRepetition)) {
+
+            rBtnTripRepetition = binding.rBtnWeekly;
+
+        } else if (tripRepetitionMonthly.equals(tripRepetition)) {
+
+            rBtnTripRepetition = binding.rBtnMonthly;
+
+        }
+
+        if (rBtnTripRepetition != null) {
+
+            id = rBtnTripRepetition.getId();
+        }
+
+        return id;
+    }
+
+    private int getIdOfTypeSelectedBtn(String tripType) {
+        int id = -1;
+
+        String tripTypeOneWay = getActivity().getResources().getString(R.string.one_way);
+        String tripTypeRoundTrip = getActivity().getResources().getString(R.string.round_trip);
+
+
+        RadioButton rBtnTripType = null;
+
+
+        if (tripType.equals(tripTypeOneWay)) {
+
+            rBtnTripType = binding.rBtnOneWay;
+
+        } else if (tripType.equals(tripTypeRoundTrip)) {
+
+            rBtnTripType = binding.rBtnRoundTrip;
+
+        }
+
+        if (rBtnTripType != null) {
+
+            id = rBtnTripType.getId();
+        }
+
+        return id;
+
     }
 }

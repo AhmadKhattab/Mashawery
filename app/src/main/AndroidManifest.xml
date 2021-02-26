@@ -42,9 +42,6 @@
         <activity android:name=".trip.create.view.AddTripActivity">
         </activity>
 
-        <activity android:name=".home.view.MaineActivity">
-
-        </activity>
         <service
             android:name=".helpPackag.FloatingViewService"
             android:enabled="true"
