@@ -142,7 +142,7 @@ public class EditTripInfoFragment extends Fragment {
                     binding.etTripEndPoint.setText(trip.getEndPoint());
 
                     int tripRepetitionSelectedBtnId = getIdOfRepetitionSelectedBtn(trip.getRepetition());
-                    String tripType = trip.getType();
+
                     int tripTypeSelectedBtnId = getIdOfTypeSelectedBtn(trip.getType());
 
                     if (tripRepetitionSelectedBtnId != -1) {

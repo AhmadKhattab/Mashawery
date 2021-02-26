@@ -140,8 +140,9 @@ public class FloatingViewService extends Service {
         closeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                collapsedView.setVisibility(View.GONE);
-                expandedView.setVisibility(View.GONE);
+               /* collapsedView.setVisibility(View.GONE);
+                expandedView.setVisibility(View.GONE);*/
+                stopSelf();
             }
         });
 

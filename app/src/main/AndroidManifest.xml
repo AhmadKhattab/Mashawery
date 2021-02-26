@@ -21,6 +21,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Mashawery">
+
         <receiver
             android:name=".reminder.view.CancelReciever"
             android:enabled="true"
@@ -29,6 +30,15 @@
             android:name=".reminder.view.StartReciever"
             android:enabled="true"
             android:exported="true" />
+
+        <activity android:name=".Profile.Profile"></activity>
+        <activity android:name=".registeration.view.splashScrean">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".reminder.view.ReminderActivity"
@@ -40,6 +50,7 @@
         <activity android:name=".history.view.HistoryActivity" />
         <activity android:name=".trip.create.view.TimePickers" />
         <activity android:name=".registeration.view.LoginActivity" />
+
         <activity android:name=".registeration.view.RegisterActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

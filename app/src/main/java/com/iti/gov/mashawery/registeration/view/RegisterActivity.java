@@ -19,6 +19,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.iti.gov.mashawery.R;
 import com.iti.gov.mashawery.databinding.ActivityRegisterBinding;
+
 import com.iti.gov.mashawery.home.view.MainActivity;
 import com.iti.gov.mashawery.localStorage.SharedPref;
 import com.iti.gov.mashawery.model.User;
@@ -116,7 +117,7 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        SharedPref.createPrefObject(RegisterActivity.this);
+      /*  SharedPref.createPrefObject(RegisterActivity.this);
         boolean isLogin =SharedPref.checkLogin();
 
         if(isLogin) {
@@ -131,4 +132,3 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
-}

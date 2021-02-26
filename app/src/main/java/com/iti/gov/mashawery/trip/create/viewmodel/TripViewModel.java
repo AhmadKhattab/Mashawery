@@ -22,6 +22,7 @@ public class TripViewModel extends ViewModel {
     public MutableLiveData<List<Note>> noteListLiveData;
     public MutableLiveData<Trip> tripLiveData;
     public MutableLiveData<Note> note;
+    public MutableLiveData<Boolean> setDateAndTimeFlag;
 
     private TripsRepoInterface tripsRepoInterface;
 
@@ -31,6 +32,9 @@ public class TripViewModel extends ViewModel {
         addNotesFlag = new MutableLiveData<>();
         finishFlag = new MutableLiveData<>();
         noteListLiveData = new MutableLiveData<>();
+        noteListLiveData.setValue(new ArrayList<Note>());
+        setDateAndTimeFlag = new MutableLiveData<>();
+
         initializeNotesLiveData();
         dateAndTimeFlag.setValue(false);
         addNotesFlag.setValue(false);
@@ -38,7 +42,8 @@ public class TripViewModel extends ViewModel {
         note = new MutableLiveData<>();
         note.setValue(new Note());
         tripLiveData = new MutableLiveData<>();
-        tripLiveData.setValue(null);
+        tripLiveData.setValue(new Trip());
+        setDateAndTimeFlag.setValue(false);
 
 
     }
@@ -130,7 +135,11 @@ public class TripViewModel extends ViewModel {
 
     public void updateTrip(Trip trip) {
 
-        this.tripLiveData.setValue(trip);
+        tripLiveData.getValue().setName(trip.getName());
+        tripLiveData.getValue().setStartPoint(trip.getStartPoint());
+        tripLiveData.getValue().setEndPoint(trip.getEndPoint());
+        tripLiveData.getValue().setRepetition(trip.getRepetition());
+        tripLiveData.getValue().setType(trip.getType());
     }
 
     public void updateTripTime(String date, String time) {
@@ -151,5 +160,9 @@ public class TripViewModel extends ViewModel {
     public void triggerTrip() {
 
         tripLiveData.setValue(tripLiveData.getValue());
+    }
+
+    public void enableDateAndTimeFlag() {
+        setDateAndTimeFlag.setValue(true);
     }
 }

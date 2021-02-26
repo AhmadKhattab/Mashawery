@@ -118,7 +118,9 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         account = GoogleSignIn.getLastSignedInAccount(this);
-        updateUI(account);
+        if (account != null){
+
+        updateUI(account);}
     }
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();

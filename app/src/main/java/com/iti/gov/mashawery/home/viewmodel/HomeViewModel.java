@@ -1,5 +1,6 @@
 package com.iti.gov.mashawery.home.viewmodel;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
@@ -15,6 +16,7 @@ public class HomeViewModel {
     private TripsRepoInterface tripsRepoInterface;
     public MediatorLiveData<List<Trip>> tripListLiveData;
     public MutableLiveData<Integer> tripIdLiveData;
+    private MutableLiveData<String> currentUserIdlIveData;
 
     {
 
@@ -24,6 +26,13 @@ public class HomeViewModel {
         tripIdLiveData = new MutableLiveData<>();
         tripIdLiveData.setValue(-1);
 
+        currentUserIdlIveData = new MutableLiveData<>();
+        currentUserIdlIveData.setValue("default user");
+
+    }
+
+    public void setCurrentUserId (String currentUserId) {
+        currentUserIdlIveData.setValue(currentUserId);
     }
 
     public void setTripsRepoInterface(TripsRepoInterface tripsRepoInterface) {
@@ -32,7 +41,7 @@ public class HomeViewModel {
     }
 
     public void getTrips() {
-        tripListLiveData.addSource(tripsRepoInterface.getTrips(), new Observer<List<Trip>>() {
+        tripListLiveData.addSource(tripsRepoInterface.getTrips(currentUserIdlIveData.getValue()), new Observer<List<Trip>>() {
             @Override
             public void onChanged(List<Trip> trips) {
                 tripListLiveData.setValue(trips);

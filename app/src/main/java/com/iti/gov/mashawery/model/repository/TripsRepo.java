@@ -4,6 +4,7 @@ import android.content.Context;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.iti.gov.mashawery.localStorage.SharedPref;
 import com.iti.gov.mashawery.model.Trip;
 import com.iti.gov.mashawery.model.TripsDatabase;
 
@@ -23,8 +24,10 @@ public class TripsRepo implements TripsRepoInterface {
     private MutableLiveData<List<Trip>> historyListLiveData = new MutableLiveData<>();
     private MutableLiveData<Trip> tripLiveData = new MutableLiveData<>();
     private TripsDatabase tripsDatabase;
+    private Context context;
 
     public TripsRepo(Context context) {
+        this.context = context;
         tripsDatabase = TripsDatabase.getInstance(context);
         tripListLiveData.setValue(new ArrayList<>());
         historyListLiveData.setValue(new ArrayList<>());
@@ -32,9 +35,9 @@ public class TripsRepo implements TripsRepoInterface {
     }
 
     @Override
-    public MutableLiveData<List<Trip>> getTrips() {
+    public MutableLiveData<List<Trip>> getTrips(String userId) {
 
-        tripsDatabase.tripDao().getTrips()
+        tripsDatabase.tripDao().getTrips(userId)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<List<Trip>>() {
@@ -84,9 +87,9 @@ public class TripsRepo implements TripsRepoInterface {
     }
 
     @Override
-    public MutableLiveData<List<Trip>> getHistory() {
+    public MutableLiveData<List<Trip>> getHistory(String userId) {
 
-        tripsDatabase.tripDao().getHistory()
+        tripsDatabase.tripDao().getHistory(userId)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<List<Trip>>() {
@@ -148,8 +151,9 @@ public class TripsRepo implements TripsRepoInterface {
 
                     @Override
                     public void onComplete() {
-                        getHistory();
-                        getTrips();
+                        SharedPref.createPrefObject(context);
+                        getHistory(SharedPref.getCurrentUserId());
+                        getTrips(SharedPref.getCurrentUserId());
                     }
 
                     @Override
@@ -174,8 +178,9 @@ public class TripsRepo implements TripsRepoInterface {
 
                     @Override
                     public void onComplete() {
-                        getHistory();
-                        getTrips();
+                        SharedPref.createPrefObject(context);
+                        getHistory(SharedPref.getCurrentUserId());
+                        getTrips(SharedPref.getCurrentUserId());
                     }
 
                     @Override
