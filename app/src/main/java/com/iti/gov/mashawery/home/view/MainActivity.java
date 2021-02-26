@@ -115,52 +115,7 @@ public class MainActivity extends AppCompatActivity {
 
             public void onTripStart(Trip trip) {
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    if (!Settings.canDrawOverlays(MainActivity.this)) {
-                        Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                                Uri.parse("package:" + getPackageName()));
-                        startActivityForResult(intent, CODE_DRAW_OVER_OTHER_APP_PERMISSION);
-                    } else {
-                        Intent intent = new Intent(MainActivity.this, FloatingViewService.class);
-                        intent.putExtra("tripList", new Gson().toJson(trip.getNoteList().getNoteList()));
-                        startService(intent);
 
-
-                    }
-                } else {
-
-                    Toast.makeText(MainActivity.this, "Your android version does not support this service", Toast.LENGTH_LONG).show();
-                }
-                //viewModel.updateTrip("Done", tripId);
-
-                //Uri gmmIntentUri = Uri.parse("google.navigation:q=" + address);
-                if (checkPermession()) {
-                    if (isLocationEnabled()) {
-                       /* Uri gmmIntentUri = Uri.parse("google.navigation:q=" + trip.getEndPoint());
-                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                        mapIntent.setPackage("com.google.android.apps.maps");
-                        startActivity(mapIntent);*/
-                        Uri gmmIntentUri = Uri.parse("http://maps.google.com/maps?daddr=" + trip.getEndPoint());
-                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                        mapIntent.setPackage("com.google.android.apps.maps");
-                        startActivity(mapIntent);
-                        TripAlarm.cancelAlarm(MainActivity.this, trip.getId());
-                        trip.setStatus(STATUS_DONE);
-                        homeViewModel.updateTripInDB(trip);
-                        Intent intent = new Intent(MainActivity.this, FloatingViewService.class);
-                        intent.putExtra("tripList", new Gson().toJson(trip.getNoteList().getNoteList()));
-                        //  SharedPref.setFloatingNotes(floatingNote.get(0).getTitle());
-
-                        startService(intent);
-
-                    } else {
-                        Toast.makeText(MainActivity.this, "Turn the Location on", Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                        startActivity(intent);
-                    }
-                } else {
-                    requestPermession();
-                }
             }
         });
 
@@ -208,14 +163,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        binding.fab2.setOnClickListener(new View.OnClickListener() {
+        /*binding.fab2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent intent = new Intent(MainActivity.this, MaineActivity.class);
+              *//*  //Intent intent = new Intent(MainActivity.this, MaineActivity.class);
                 Intent intent = new Intent(MainActivity.this, MaineActivity.class);
-                startActivity(intent);
+                startActivity(intent);*//*
             }
-        });
+        });*/
         binding.fab3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -39,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
     String email;
     String password;
     public static GoogleSignInClient mGoogleSignInClient;
-    public  static GoogleSignInAccount account;
+    public static GoogleSignInAccount account;
     int RC_SIGN_IN = 10;
 
     @Override
