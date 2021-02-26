@@ -20,7 +20,7 @@ public class Profile extends AppCompatActivity {
     private Button emailButton;
     private Button syncButton;
     private String userEmail;
-    private ProfileViewModel profileViewModel;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

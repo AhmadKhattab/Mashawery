@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +38,8 @@ public class EditTripDateAndTimeFragment extends Fragment {
     FragmentEditTripDateAndTimeBinding binding;
     EditTripViewModel editTripViewModel;
     DatePickerDialog.OnDateSetListener onDateSetListener;
-
+    DatePickerDialog datePickerDialog;
+    int yearVm, monthVm, dayVm;
     int hour, min;
 
     @Override
@@ -59,10 +61,20 @@ public class EditTripDateAndTimeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         binding = FragmentEditTripDateAndTimeBinding.bind(view);
 
-        Calendar calendar = Calendar.getInstance();
-        final int year = calendar.get(Calendar.YEAR);
-        final int month = calendar.get(Calendar.MONTH);
-        final int day = calendar.get(Calendar.DAY_OF_MONTH);
+        //Declare EditTripViewModel
+        editTripViewModel = ViewModelProviders.of(getActivity()).get(EditTripViewModel.class);
+
+
+        String[] timeSplit = editTripViewModel.tripLiveData.getValue().getTime().split(":");
+        hour = Integer.parseInt(timeSplit[0]);
+        min = Integer.parseInt(timeSplit[1]);
+
+        String[] dateSplit = editTripViewModel.tripLiveData.getValue().getDate().split("/");
+
+        yearVm = Integer.parseInt(dateSplit[2]);
+        monthVm = Integer.parseInt(dateSplit[1]);
+        dayVm = Integer.parseInt(dateSplit[0]);
+
 
         binding.tvTime.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,7 +107,7 @@ public class EditTripDateAndTimeFragment extends Fragment {
                                     e.printStackTrace();
                                 }
                             }
-                        }, 12, 0, false);
+                        }, hour, min, false);
 
                 //Set transparent background
                 timePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -115,14 +127,18 @@ public class EditTripDateAndTimeFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                DatePickerDialog datePickerDialog = new DatePickerDialog(
+                datePickerDialog = new DatePickerDialog(
                         getActivity(),
                         android.R.style.Theme_Holo_Light_Dialog_MinWidth,
-                        onDateSetListener, year, month, day);
+                        onDateSetListener, yearVm, monthVm - 1, dayVm);
 
                 //Set transparent background
                 datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
+                //Disable past date
+                datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+
+                //datePickerDialog.updateDate(year, month-1, day);
                 //Show the date picker dialog
                 datePickerDialog.show();
 
@@ -134,7 +150,11 @@ public class EditTripDateAndTimeFragment extends Fragment {
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 month++;
                 String date = dayOfMonth + "/" + month + "/" + year;
+                yearVm = year;
+                monthVm = month;
+                dayVm = dayOfMonth;
 
+                datePickerDialog.updateDate(year, month, dayOfMonth);
                 binding.tvDate.setText(date);
             }
         };
@@ -144,8 +164,6 @@ public class EditTripDateAndTimeFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        //Declare EditTripViewModel
-        editTripViewModel = ViewModelProviders.of(getActivity()).get(EditTripViewModel.class);
 
         //Initialize date and time
         binding.tvDate.setText(editTripViewModel.tripLiveData.getValue().getDate());
@@ -171,7 +189,12 @@ public class EditTripDateAndTimeFragment extends Fragment {
 
                 if (!(binding.tvDate.getText().toString().equals("Select Date"))
                         && !(binding.tvTime.getText().toString().equals("Select Time"))) {
-                    editTripViewModel.navigateToEditNotes();
+                    if (compareTime(binding.tvTime.getText().toString())) {
+                        editTripViewModel.navigateToEditNotes();
+                    } else {
+                        Toast.makeText(getActivity(), "This time is elapsed", Toast.LENGTH_SHORT).show();
+                    }
+
                 } else {
                     Toast.makeText(getActivity(), "Please fill all fields", Toast.LENGTH_SHORT).show();
                 }
@@ -189,5 +212,33 @@ public class EditTripDateAndTimeFragment extends Fragment {
                 .addToBackStack("notes_fragment");
         transaction.commit();
 
+    }
+
+
+    private String[] getTimeSplit(String time) {
+
+        return time.split(":");
+    }
+
+    private boolean compareTime(String selectedTime) {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        String currentTime = sdf.format(new Date());
+
+        int hour1 = Integer.parseInt(getTimeSplit(selectedTime)[0]);
+        int min1 = Integer.parseInt(getTimeSplit(selectedTime)[1]);
+
+        int hour2 = Integer.parseInt(getTimeSplit(currentTime)[0]);
+        int min2 = Integer.parseInt(getTimeSplit(currentTime)[1]);
+
+        Log.i("TAG", "compareTime: " + hour1 + ":" + min1);
+        Log.i("TAG", "compareTime: " + hour2 + ":" + min2);
+        if (hour1 < hour2) {
+            return false;
+        } else if (hour1 == hour2 && min1 <= min2) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }

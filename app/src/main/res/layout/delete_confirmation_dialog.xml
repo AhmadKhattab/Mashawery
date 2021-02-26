@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/deleteConfirmationContainer"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="30dp"
+    android:background="@drawable/rounded_shape"
+    android:elevation="6dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="304dp"
+        android:layout_height="263dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <TextView
+            android:id="@+id/tvDeletionTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:textColor="#000000"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.163" />
+
+        <TextView
+            android:id="@+id/tvDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="TextView"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvDeletionTitle"
+            app:layout_constraintVertical_bias="0.144" />
+
+        <Button
+            android:id="@+id/btnConfirmDeletion"
+            style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="8dp"
+            android:backgroundTint="@color/orange_color"
+            android:elevation="4dp"
+            android:text="@string/delete"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            app:icon="@drawable/ic_delete_trash"
+            app:iconTint="@color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/btnCancelDeletion"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/btnCancelDeletion"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <Button
+            android:id="@+id/btnCancelDeletion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="148dp"
+            android:backgroundTint="#FFFFFF"
+            android:elevation="4dp"
+            android:text="@string/cancel"
+            android:textAllCaps="false"
+            android:textColor="#323131"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

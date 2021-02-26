@@ -19,6 +19,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.iti.gov.mashawery.R;
 import com.iti.gov.mashawery.databinding.ActivityRegisterBinding;
+
+import com.iti.gov.mashawery.home.view.MainActivity;
+
 import com.iti.gov.mashawery.localStorage.SharedPref;
 import com.iti.gov.mashawery.model.User;
 

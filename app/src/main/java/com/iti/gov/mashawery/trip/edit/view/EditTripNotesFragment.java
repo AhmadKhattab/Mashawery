@@ -1,5 +1,6 @@
 package com.iti.gov.mashawery.trip.edit.view;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -19,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.iti.gov.mashawery.R;
+import com.iti.gov.mashawery.databinding.DeleteConfirmationDialogBinding;
 import com.iti.gov.mashawery.databinding.FragmentAddNotesBinding;
 import com.iti.gov.mashawery.databinding.FragmentEditTripNotesBinding;
 import com.iti.gov.mashawery.databinding.InsertNewNoteBinding;
@@ -39,6 +41,7 @@ public class EditTripNotesFragment extends Fragment {
 
     FragmentEditTripNotesBinding binding;
     InsertNewNoteBinding insertNewNoteBinding;
+    DeleteConfirmationDialogBinding deleteConfirmationDialogBinding;
     EditTripViewModel editTripViewModel;
     NotesAdapter notesAdapter;
     Dialog dialog;
@@ -148,7 +151,9 @@ public class EditTripNotesFragment extends Fragment {
 
             @Override
             public void onNoteDeleted(Note note) {
-                editTripViewModel.deleteSelectedNote(note);
+//                editTripViewModel.deleteSelectedNote(note);
+                showDeleteNoteConfirmationDialog(note);
+
             }
         });
 
@@ -165,6 +170,7 @@ public class EditTripNotesFragment extends Fragment {
             @Override
             public void onChanged(Boolean finishFlag) {
                 if(finishFlag) {
+                    getActivity().finish();
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     startActivity(intent);
                 }
@@ -210,5 +216,35 @@ public class EditTripNotesFragment extends Fragment {
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         binding.recycler.setLayoutManager(layoutManager);
 
+    }
+
+    private void showDeleteNoteConfirmationDialog (Note note) {
+        deleteConfirmationDialogBinding = DeleteConfirmationDialogBinding.inflate(getActivity().getLayoutInflater());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AlertDialogTheme);
+        builder.setView(deleteConfirmationDialogBinding.getRoot());
+        AlertDialog deleteNoteConfirmationDialog = builder.create();
+
+
+        deleteConfirmationDialogBinding.tvDeletionTitle.setText(R.string.delete_note);
+        deleteConfirmationDialogBinding.tvDescription.setText(R.string.are_you_sure_to_delete_note);
+        deleteConfirmationDialogBinding.btnConfirmDeletion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editTripViewModel.deleteSelectedNote(note);
+                deleteNoteConfirmationDialog.dismiss();
+
+            }
+        });
+
+        deleteConfirmationDialogBinding.btnCancelDeletion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteNoteConfirmationDialog.dismiss();
+            }
+        });
+
+
+
+        deleteNoteConfirmationDialog.show();
     }
 }

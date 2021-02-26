@@ -16,17 +16,14 @@ public interface TripDao {
     @Insert
     Completable insertTrip(Trip trip);
 
-
-
-    @Query("select * from trips_table Where status = 0")
-
-    Single<List<Trip>> getTrips();
+    @Query("select * from trips_table Where status = 0 and userId=:userId")
+    Single<List<Trip>> getTrips(String userId);
 
     @Query("Select * from trips_table Where id=:tripId")
     Single<Trip> getTripById(int tripId);
 
-    @Query("select * from trips_table Where status = 1 or status = 2")
-    Single<List<Trip>> getHistory();
+    @Query("select * from trips_table Where status = 1 or status = 2 and userId=:userId")
+    Single<List<Trip>> getHistory(String userId);
 
     @Query("Delete from trips_table Where id=:tripId")
     Completable removeTrip(int tripId);
