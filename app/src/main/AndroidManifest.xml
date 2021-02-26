@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.iti.gov.mashawery">
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACTION_MANAGE_OVERLAY_PERMISSION" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    <uses-permission android:name="android.permission.ACTION_MANAGE_OVERLAY_PERMISSION"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.ACTION_MANAGE_OVERLAY_PERMISSION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -21,39 +21,33 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Mashawery">
-        <activity android:name=".reminder.view.ReminderActivity"
-            android:theme="@style/Theme.AppCompat.Light.Dialog.Alert"
+        <activity android:name=".Profile.Profile"></activity>
+        <activity android:name=".registeration.view.splashScrean">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".reminder.view.ReminderActivity"
             android:excludeFromRecents="false"
             android:launchMode="singleTask"
-            android:taskAffinity=""/>
-
+            android:taskAffinity=""
+            android:theme="@style/Theme.AppCompat.Light.Dialog.Alert" />
         <activity android:name=".trip.edit.view.EditTripActivity" />
         <activity android:name=".history.view.HistoryActivity" />
         <activity android:name=".trip.create.view.TimePickers" />
         <activity android:name=".registeration.view.LoginActivity" />
+        <activity android:name=".registeration.view.RegisterActivity" />
+        <activity android:name=".trip.create.view.AddTripActivity" />
 
-        <activity android:name=".registeration.view.RegisterActivity" >
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-    </activity>
-        <activity android:name=".trip.create.view.AddTripActivity">
-        </activity>
-
-        <activity android:name=".home.view.MaineActivity">
-
-        </activity>
         <service
             android:name=".helpPackag.FloatingViewService"
             android:enabled="true"
             android:exported="true" />
 
-
-
-        <activity android:name=".home.view.MainActivity"/>
-
+        <activity android:name=".home.view.MainActivity" />
 
         <receiver
             android:name=".reminder.view.TripReminderReceiver"
@@ -65,8 +59,6 @@
                 <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-
     </application>
-    <!--            android:process=":remote"-->
 
 </manifest>

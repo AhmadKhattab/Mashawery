@@ -21,7 +21,6 @@ import android.location.LocationManager;
 
 import android.content.ComponentName;
 import android.content.DialogInterface;
-import android.content.Intent;
 
 import android.net.Uri;
 import android.os.Build;
@@ -33,12 +32,12 @@ import android.widget.Toast;
 
 
 import com.google.gson.Gson;
+import com.iti.gov.mashawery.Profile.Profile;
 import com.iti.gov.mashawery.R;
 import com.iti.gov.mashawery.databinding.ActivityMainBinding;
 import com.iti.gov.mashawery.helpPackag.FloatingViewService;
 import com.iti.gov.mashawery.localStorage.SharedPref;
 import com.iti.gov.mashawery.model.Note;
-import com.iti.gov.mashawery.registeration.view.LoginActivity;
 import com.iti.gov.mashawery.history.view.HistoryActivity;
 import com.iti.gov.mashawery.home.viewmodel.HomeViewModel;
 import com.iti.gov.mashawery.model.Trip;
@@ -121,12 +120,21 @@ public class MainActivity extends AppCompatActivity {
                                 Uri.parse("package:" + getPackageName()));
                         startActivityForResult(intent, CODE_DRAW_OVER_OTHER_APP_PERMISSION);
                     } else {
-                        Intent intent = new Intent(MainActivity.this, FloatingViewService.class);
+                      /*  Intent intent = new Intent(MainActivity.this, FloatingViewService.class);
                         intent.putExtra("tripList", new Gson().toJson(trip.getNoteList().getNoteList()));
-                        startService(intent);
+                        startService(intent);*/
+                        Intent intent = new Intent(MainActivity.this, FloatingViewService.class);
 
-
+                        if (trip.getNoteList().getNoteList() != null) {
+                            SharedPref.setFloatingNotes( new Gson().toJson(trip.getNoteList().getNoteList()));
+                            Log.i("tripList notes", (trip.getNoteList().getNoteList().toString()));
+                        }
+                       startService(intent);
                     }
+
+
+
+
                 } else {
 
                     Toast.makeText(MainActivity.this, "Your android version does not support this service", Toast.LENGTH_LONG).show();
@@ -212,7 +220,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Intent intent = new Intent(MainActivity.this, MaineActivity.class);
-                Intent intent = new Intent(MainActivity.this, MaineActivity.class);
+                Intent intent = new Intent(MainActivity.this,  Profile.class);
                 startActivity(intent);
             }
         });
@@ -339,6 +347,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stopService(new Intent(this, FloatingViewService.class));
+    }
 
 }
 //comment
