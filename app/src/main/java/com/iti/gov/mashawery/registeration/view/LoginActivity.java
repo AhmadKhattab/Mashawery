@@ -45,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
     String email;
     String password;
     public static GoogleSignInClient mGoogleSignInClient;
-    public  static GoogleSignInAccount account;
+    public static GoogleSignInAccount account;
     int RC_SIGN_IN = 10;
 
     @Override
@@ -67,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
         fDatabase = FirebaseDatabase.getInstance();
         SignInButton signInButton =binding.googleSignInButton;
         signInButton.setSize(SignInButton.SIZE_STANDARD);
-        SharedPref.createPrefObject(LoginActivity.this);
+        SharedPref.createPrefObject(this);
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -219,7 +219,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-
 
 
 

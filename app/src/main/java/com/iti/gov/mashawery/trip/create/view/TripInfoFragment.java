@@ -60,9 +60,9 @@ public class TripInfoFragment extends Fragment {
 
         //Initialize places
         Places.initialize(getActivity().getApplicationContext(), "AIzaSyBdVG9vzyj-y_qnexqsPyFVpXKOaHjtRUs");
+//        Places.initialize(getActivity().getApplicationContext(), "AIzaSyBL_za9z0eWrk_VFVN1TCuP32mQW19P52o");
 
         //Set EditText trip start point non-focusable
-
         binding.etTripStartPoint.setFocusable(false);
         binding.etTripStartPoint.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,7 +83,6 @@ public class TripInfoFragment extends Fragment {
 
 
         //Set EditText trip end point non-focusable
-
         binding.etTripEndPoint.setFocusable(false);
         binding.etTripEndPoint.setOnClickListener(new View.OnClickListener() {
             @Override

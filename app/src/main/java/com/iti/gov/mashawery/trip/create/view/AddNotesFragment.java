@@ -27,6 +27,7 @@ import com.iti.gov.mashawery.databinding.InsertNewNoteBinding;
 import com.iti.gov.mashawery.home.view.MainActivity;
 import com.iti.gov.mashawery.localStorage.SharedPref;
 import com.iti.gov.mashawery.model.Note;
+import com.iti.gov.mashawery.model.NotesHolder;
 import com.iti.gov.mashawery.model.Trip;
 import com.iti.gov.mashawery.reminder.view.TripAlarm;
 import com.iti.gov.mashawery.trip.create.viewmodel.TripViewModel;
@@ -177,10 +178,14 @@ public class AddNotesFragment extends Fragment {
             public void onClick(View v) {
                 SharedPref.createPrefObject(getActivity());
                 tripViewModel.setTripId(Math.abs((int)Calendar.getInstance().getTimeInMillis()));
-                tripViewModel.triggerTrip();
-                TripAlarm.setAlarm(newTrip,getActivity());
                 String currentUserId = SharedPref.getCurrentUserId();
                 tripViewModel.setUserId(currentUserId);
+                tripViewModel.triggerTrip();
+                newTrip.setNoteList(new NotesHolder(tripViewModel.noteListLiveData.getValue()));
+
+                //Set alarm corresponding to trip
+                TripAlarm.setAlarm(newTrip,getActivity());
+
                 tripViewModel.insertTrip();
                 tripViewModel.creationCompleted();
             }

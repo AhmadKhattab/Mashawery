@@ -38,7 +38,7 @@ public class TripsRepo implements TripsRepoInterface {
     public MutableLiveData<List<Trip>> getTrips(String userId) {
 
         tripsDatabase.tripDao().getTrips(userId)
-                .subscribeOn(Schedulers.computation())
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<List<Trip>>() {
                     @Override
@@ -64,7 +64,7 @@ public class TripsRepo implements TripsRepoInterface {
     @Override
     public MutableLiveData<Trip> getTripById(int tripId) {
         tripsDatabase.tripDao().getTripById(tripId)
-                .subscribeOn(Schedulers.computation())
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<Trip>() {
                     @Override
@@ -90,7 +90,7 @@ public class TripsRepo implements TripsRepoInterface {
     public MutableLiveData<List<Trip>> getHistory(String userId) {
 
         tripsDatabase.tripDao().getHistory(userId)
-                .subscribeOn(Schedulers.computation())
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<List<Trip>>() {
                                @Override
@@ -119,7 +119,7 @@ public class TripsRepo implements TripsRepoInterface {
     public void insertTrip(Trip trip) {
 
         tripsDatabase.tripDao().insertTrip(trip)
-                .subscribeOn(Schedulers.computation())
+                .subscribeOn(Schedulers.io())
                 .subscribe(new CompletableObserver() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
@@ -141,7 +141,7 @@ public class TripsRepo implements TripsRepoInterface {
     @Override
     public void removeTrip(int tripId) {
         tripsDatabase.tripDao().removeTrip(tripId)
-                .subscribeOn(Schedulers.computation())
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new CompletableObserver() {
                     @Override
@@ -168,7 +168,7 @@ public class TripsRepo implements TripsRepoInterface {
     public void updateTrip(Trip trip) {
 
         tripsDatabase.tripDao().updateTrip(trip)
-                .subscribeOn(Schedulers.computation())
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new CompletableObserver() {
                     @Override

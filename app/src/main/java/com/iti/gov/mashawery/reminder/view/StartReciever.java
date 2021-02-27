@@ -1,0 +1,41 @@
+package com.iti.gov.mashawery.reminder.view;
+
+import android.app.NotificationManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.util.Log;
+
+import com.google.gson.Gson;
+import com.iti.gov.mashawery.home.view.MainActivity;
+import com.iti.gov.mashawery.home.viewmodel.HomeViewModel;
+import com.iti.gov.mashawery.model.Trip;
+import com.iti.gov.mashawery.model.repository.TripsRepo;
+import com.iti.gov.mashawery.model.repository.TripsRepoInterface;
+
+public class StartReciever extends BroadcastReceiver {
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        TripsRepoInterface tripsRepoInterface= new TripsRepo(context);
+        HomeViewModel reminderViewModel =new HomeViewModel();
+        reminderViewModel.setTripsRepoInterface(tripsRepoInterface);
+        Trip trip = (Trip) new Gson().fromJson(intent.getStringExtra(MainActivity.TRIP_ID), Trip.class);
+        Log.i("TAG", trip.getName()+ " ===================================================== "+ trip.getId());
+        //TripAlarm.cancelAlarm(context, trip.getId());
+        NotificationManager notificationManager= context.getSystemService(NotificationManager.class);
+        //Log.i("TAG", trip.getName()+ " =============************************777 "+ trip.getId());
+        notificationManager.cancel(intent.getIntExtra("ID", -1));
+       // Log.i("TAG", trip.getName()+ " =========================************=============== "+ trip.getId());
+        trip.setStatus(MainActivity.STATUS_DONE);
+        reminderViewModel.updateTripInDB(trip);
+        Uri gmmIntentUri = Uri.parse("http://maps.google.com/maps?daddr=" + trip.getEndPoint());
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        mapIntent.setPackage("com.google.android.apps.maps");
+        mapIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(mapIntent);
+
+
+    }
+}
