@@ -183,6 +183,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     requestPermession();
                 }
+
             }
 
         });
@@ -219,6 +220,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+
         binding.fab2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -235,6 +238,7 @@ public class MainActivity extends AppCompatActivity {
 //                startActivity(intent);
 //            }
 //        });
+
 
         binding.fab3.setOnClickListener(new View.OnClickListener() {
             @Override

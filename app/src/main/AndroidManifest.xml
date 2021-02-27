@@ -22,9 +22,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Mashawery">
 
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/map_api_key" />
+
+        <receiver
+            android:name=".reminder.view.CancelReciever"
+            android:enabled="true"
+            android:exported="true"></receiver>
+        <receiver
+            android:name=".reminder.view.StartReciever"
+            android:enabled="true"
+            android:exported="true" />
+>>>>>>> 387a5a3c9b1e5b367080fb89d1d4d7aefb26b0e0
 
         <activity android:name=".Profile.Profile"></activity>
         <activity android:name=".registeration.view.splashScrean">
@@ -34,6 +45,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".reminder.view.ReminderActivity"
             android:excludeFromRecents="false"
@@ -44,7 +56,14 @@
         <activity android:name=".history.view.HistoryActivity" />
         <activity android:name=".trip.create.view.TimePickers" />
         <activity android:name=".registeration.view.LoginActivity" />
-        <activity android:name=".registeration.view.RegisterActivity" />
+
+        <activity android:name=".registeration.view.RegisterActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".trip.create.view.AddTripActivity" />
 
         <service
