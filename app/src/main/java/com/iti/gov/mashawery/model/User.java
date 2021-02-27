@@ -17,9 +17,18 @@ public class User {
         this.password = password;
     }
 
-    public User(String email, String password) {
+   /* public User(String email, String password) {
         this.email = email;
         this.password = password;
+    }*/
+
+    public User() {
+
+    }
+
+    public User(String userName, String email) {
+        this.userName = userName;
+        this.email = email;
     }
 
     public String getEmail() {

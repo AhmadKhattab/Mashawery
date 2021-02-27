@@ -70,6 +70,10 @@ public class Profile extends AppCompatActivity {
     private void signOut() {
 
         LoginActivity.mGoogleSignInClient.signOut();
+        SharedPref.clear();
+
+
+
 
 
     }

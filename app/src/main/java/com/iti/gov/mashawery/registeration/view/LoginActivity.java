@@ -20,15 +20,21 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.iti.gov.mashawery.R;
 
 import com.iti.gov.mashawery.databinding.ActivityLoginBinding;
 import com.iti.gov.mashawery.home.view.MainActivity;
 import com.iti.gov.mashawery.localStorage.SharedPref;
+import com.iti.gov.mashawery.model.User;
 
 public class LoginActivity extends AppCompatActivity {
     FirebaseAuth fAuth;
@@ -46,7 +52,11 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+      /*  GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();*/
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
@@ -80,7 +90,7 @@ public class LoginActivity extends AppCompatActivity {
                                    if (task.isSuccessful()) {
                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                        userID = fAuth.getCurrentUser().getUid();
-                                       startActivity(intent);
+
                                       // progressDialog.dismiss();
                                        SharedPref.setLogin(true);
                                        SharedPref.setLoginWithFirebase(true);
@@ -88,6 +98,7 @@ public class LoginActivity extends AppCompatActivity {
                                        SharedPref.setUserEmail(email);
                                        SharedPref.setUserId(userID);
                                        Log.e("le",email);
+                                       startActivity(intent);
                                        finish();
                                    } else {
                                        Toast.makeText(LoginActivity.this,
@@ -113,7 +124,7 @@ public class LoginActivity extends AppCompatActivity {
 
            }
        });
-    }
+    }/*
     @Override
     protected void onStart() {
         super.onStart();
@@ -121,7 +132,7 @@ public class LoginActivity extends AppCompatActivity {
         if (account != null){
 
         updateUI(account);}
-    }
+    }*/
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
@@ -129,6 +140,40 @@ public class LoginActivity extends AppCompatActivity {
     public void updateUI(GoogleSignInAccount account){
 
         if (account != null){
+            userID = fAuth.getCurrentUser().getUid();
+            reference =fDatabase.getReference().child("users").child(userID);
+            User userData = new User(account.getDisplayName(),account.getEmail());
+            reference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    User user = snapshot.getValue(User.class);
+                    if(user != null){
+                        SharedPref.setUserId(userID);
+                        // syncData
+                        //gotoMainActivity
+                    }
+                    else{
+                        reference.setValue(userData).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()){
+                                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                                   // progressDialog.dismiss();
+                                   // SharedPref.setRegisterWithFirebase(true);
+                                    finish();
+
+                                } }
+                        });
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
             Intent intent = new Intent(this, MainActivity.class);
             SharedPref.setUserEmail(account.getEmail());
             SharedPref.setLoginWithFirebase(false);
@@ -151,11 +196,31 @@ public class LoginActivity extends AppCompatActivity {
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            updateUI(account);
+          //  updateUI(account);
+            firbaseGoogleAuth(account);
         } catch (ApiException e) {
-            updateUI(null);
+          //  updateUI(null);
         }
     }
+
+    private void firbaseGoogleAuth(GoogleSignInAccount account) {
+        AuthCredential authCredential= GoogleAuthProvider.getCredential(account.getIdToken(),null);
+
+        fAuth.signInWithCredential(authCredential).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    //Toast.makeText(LoginActivity.this, "successful", Toast.LENGTH_LONG).show();
+                   // AllowGoogleAccountToLogen(account);
+                    updateUI(account);
+                }else{
+
+                }
+            }
+        });
+    }
+
+
 
 
 
