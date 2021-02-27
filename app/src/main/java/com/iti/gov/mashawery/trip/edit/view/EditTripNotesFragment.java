@@ -183,7 +183,6 @@ public class EditTripNotesFragment extends Fragment {
             public void onClick(View v) {
                 editTripViewModel.triggerTrip();
                 TripAlarm.setAlarm(newTrip,getActivity());
-                String currentUserId = SharedPref.getCurrentUserId();
                 editTripViewModel.updateTripInDB();
                 editTripViewModel.creationCompleted();
             }

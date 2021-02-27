@@ -108,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPref.createPrefObject(this);
         homeViewModel.setCurrentUserId(SharedPref.getCurrentUserId());
 
+        //Get all upcoming trips
         homeViewModel.getTrips();
 
         tripsAdapter.setOnTripListener(new OnTripListener() {
@@ -357,6 +358,8 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
+
 
 
     @Override

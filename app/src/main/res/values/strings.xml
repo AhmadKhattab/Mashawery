@@ -66,4 +66,6 @@
     <string name="delete_note">Delete Note?</string>
     <string name="are_you_sure_to_delete_note">Are you sure you want to delete this note?</string>
 
+    <string name="map_api_key">AIzaSyDzVXde0WUXvI46rNXrWRmlFADSzFsghbc</string>
+
 </resources>

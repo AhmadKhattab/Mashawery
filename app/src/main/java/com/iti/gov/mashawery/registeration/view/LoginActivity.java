@@ -57,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
         fDatabase = FirebaseDatabase.getInstance();
         SignInButton signInButton =binding.googleSignInButton;
         signInButton.setSize(SignInButton.SIZE_STANDARD);
-        SharedPref.createPrefObject(LoginActivity.this);
+        SharedPref.createPrefObject(this);
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,7 +80,7 @@ public class LoginActivity extends AppCompatActivity {
                                    if (task.isSuccessful()) {
                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                        userID = fAuth.getCurrentUser().getUid();
-                                       startActivity(intent);
+
                                       // progressDialog.dismiss();
                                        SharedPref.setLogin(true);
                                        SharedPref.setLoginWithFirebase(true);
@@ -88,6 +88,7 @@ public class LoginActivity extends AppCompatActivity {
                                        SharedPref.setUserEmail(email);
                                        SharedPref.setUserId(userID);
                                        Log.e("le",email);
+                                       startActivity(intent);
                                        finish();
                                    } else {
                                        Toast.makeText(LoginActivity.this,
@@ -156,7 +157,6 @@ public class LoginActivity extends AppCompatActivity {
             updateUI(null);
         }
     }
-
 
 
 }

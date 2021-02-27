@@ -27,6 +27,7 @@ import com.iti.gov.mashawery.databinding.FragmentEditTripDateAndTimeBinding;
 import com.iti.gov.mashawery.trip.create.view.AddNotesFragment;
 import com.iti.gov.mashawery.trip.edit.viewmodel.EditTripViewModel;
 
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -117,6 +118,9 @@ public class EditTripDateAndTimeFragment extends Fragment {
 
                 //Show time picker dialog
                 timePickerDialog.show();
+
+
+
 
 
             }
@@ -221,6 +225,21 @@ public class EditTripDateAndTimeFragment extends Fragment {
     }
 
     private boolean compareTime(String selectedTime) {
+
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date selectedDate = null;
+
+        String selectedDateString = binding.tvDate.getText().toString();
+        try {
+            selectedDate = simpleDateFormat.parse(selectedDateString);
+            if (selectedDate.getTime() > System.currentTimeMillis()) {
+                return true;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
 
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
         String currentTime = sdf.format(new Date());

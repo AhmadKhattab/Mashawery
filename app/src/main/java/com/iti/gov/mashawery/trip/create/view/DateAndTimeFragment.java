@@ -284,6 +284,21 @@ public class DateAndTimeFragment extends Fragment {
 
     private boolean compareTime(String selectedTime) {
 
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date selectedDate = null;
+
+        String selectedDateString = binding.tvDate.getText().toString();
+        try {
+            selectedDate = simpleDateFormat.parse(selectedDateString);
+            if (selectedDate.getTime() > System.currentTimeMillis()) {
+                return true;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
         String currentTime = sdf.format(new Date());
 
