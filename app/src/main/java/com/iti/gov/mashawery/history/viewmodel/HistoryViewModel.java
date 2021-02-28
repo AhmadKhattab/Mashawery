@@ -1,10 +1,15 @@
 package com.iti.gov.mashawery.history.viewmodel;
 
+import android.content.Intent;
+import android.util.Pair;
+
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
+import com.iti.gov.mashawery.history.view.HistoryActivity;
+import com.iti.gov.mashawery.history.view.HistoryMapActivity;
 import com.iti.gov.mashawery.model.Trip;
 import com.iti.gov.mashawery.model.repository.TripsRepoInterface;
 
@@ -16,8 +21,10 @@ public class HistoryViewModel extends ViewModel{
     private TripsRepoInterface tripsRepoInterface;
     public MediatorLiveData<List<Trip>> historyListLiveData;
     private MutableLiveData<String> currentUserIdLiveData;
+    private static HistoryViewModel instance;
+    public MutableLiveData<Boolean> allowedToNavigateToHistoryMap;
 
-    {
+    private HistoryViewModel(TripsRepoInterface tripsRepoInterface){
 
         historyListLiveData = new MediatorLiveData<>();
         historyListLiveData.setValue(new ArrayList<>());
@@ -25,6 +32,23 @@ public class HistoryViewModel extends ViewModel{
         currentUserIdLiveData= new MutableLiveData<>();
         currentUserIdLiveData.setValue("default user");
 
+        allowedToNavigateToHistoryMap = new MutableLiveData<>();
+//        allowedToNavigateToHistoryMap.setValue(false);
+
+        this.tripsRepoInterface = tripsRepoInterface;
+
+    }
+
+    public static HistoryViewModel getInstance(TripsRepoInterface tripsRepoInterface) {
+        if(instance == null) {
+            synchronized (HistoryViewModel.class) {
+                if (instance == null) {
+
+                    instance = new HistoryViewModel(tripsRepoInterface);
+                }
+            }
+        }
+        return instance;
     }
 
     public void setTripsRepoInterface(TripsRepoInterface tripsRepoInterface) {
@@ -50,4 +74,15 @@ public class HistoryViewModel extends ViewModel{
     public void setCurrentUserId(String currentUserId) {
         currentUserIdLiveData.setValue(currentUserId);
     }
+
+    public void navigateToHistoryOnMap() {
+        if(historyListLiveData.getValue().size() > 0 &&
+                historyListLiveData.getValue() != null) {
+           allowedToNavigateToHistoryMap.setValue(true);
+        } else {
+            allowedToNavigateToHistoryMap.setValue(false);
+        }
+    }
+
+
 }
