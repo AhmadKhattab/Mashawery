@@ -19,6 +19,8 @@
     <string name="btnSaveNewNote">Save</string>
     <string name="etSearchHistory">Type trip name ..</string>
     <string name="btnFinish">Finish</string>
+    <string name="sync_success">Data sync successfully</string>
+    <string name="sync_faild">Data sync is unsuccessfully</string>
 
 
     <string name="Signuplogo">SignUp</string>

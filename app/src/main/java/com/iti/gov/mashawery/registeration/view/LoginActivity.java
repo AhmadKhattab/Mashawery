@@ -20,15 +20,35 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.iti.gov.mashawery.R;
 
 import com.iti.gov.mashawery.databinding.ActivityLoginBinding;
 import com.iti.gov.mashawery.home.view.MainActivity;
 import com.iti.gov.mashawery.localStorage.SharedPref;
+import com.iti.gov.mashawery.model.FirebaseTrip;
+import com.iti.gov.mashawery.model.FirebaseTripDao;
+import com.iti.gov.mashawery.model.NotesHolder;
+import com.iti.gov.mashawery.model.Trip;
+import com.iti.gov.mashawery.model.TripsDatabase;
+import com.iti.gov.mashawery.model.User;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import io.reactivex.CompletableObserver;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class LoginActivity extends AppCompatActivity {
     FirebaseAuth fAuth;
@@ -46,7 +66,11 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+      /*  GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();*/
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
@@ -88,6 +112,7 @@ public class LoginActivity extends AppCompatActivity {
                                        SharedPref.setUserEmail(email);
                                        SharedPref.setUserId(userID);
                                        Log.e("le",email);
+                                       syncData();
                                        startActivity(intent);
                                        finish();
                                    } else {
@@ -114,7 +139,7 @@ public class LoginActivity extends AppCompatActivity {
 
            }
        });
-    }
+    }/*
     @Override
     protected void onStart() {
         super.onStart();
@@ -122,7 +147,7 @@ public class LoginActivity extends AppCompatActivity {
         if (account != null){
 
         updateUI(account);}
-    }
+    }*/
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
@@ -130,6 +155,42 @@ public class LoginActivity extends AppCompatActivity {
     public void updateUI(GoogleSignInAccount account){
 
         if (account != null){
+            userID = fAuth.getCurrentUser().getUid();
+            reference =fDatabase.getReference().child("users").child(userID);
+            User userData = new User(account.getDisplayName(),account.getEmail());
+            reference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    User user = snapshot.getValue(User.class);
+                    if(user != null){
+                        SharedPref.setUserId(userID);
+                         syncData();
+                       /* Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(intent); */
+                        //gotoMainActivity
+                    }
+                    else{
+                        reference.setValue(userData).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()){
+                                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                                   // progressDialog.dismiss();
+                                   // SharedPref.setRegisterWithFirebase(true);
+                                    finish();
+
+                                } }
+                        });
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
             Intent intent = new Intent(this, MainActivity.class);
             SharedPref.setUserEmail(account.getEmail());
             SharedPref.setLoginWithFirebase(false);
@@ -138,6 +199,57 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
         }  else {
             Toast.makeText(this, "Please login with a valid Google account", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void syncData() {
+        String currentUserId=fAuth.getCurrentUser().getUid();
+        FirebaseTripDao.getUserTrips(currentUserId, new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                List <Trip>  tripList ;
+                tripList=new ArrayList<>();
+                for (DataSnapshot dataSnapshot:snapshot.getChildren()){
+                    FirebaseTrip trip =dataSnapshot.getValue(FirebaseTrip.class);
+                    Log.e("login",trip.getName());
+                    tripList.add(new Trip(trip.getId(),trip.getUserId(),trip.getName(),trip.getStartPoint(),trip.getEndPoint(),trip.getDate(), trip.getTime(),
+                            trip.getType(),trip.getRepetition(),trip.getStatus(),new Gson().fromJson(trip.getNoteList(),new TypeToken<NotesHolder>() { }.getType())));
+                }
+                saveFromFirebaseToRoom(tripList);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+    }
+
+    private void saveFromFirebaseToRoom(List<Trip> tripList) {
+        for (Trip trip:tripList ){
+            //please check if the data and time if status upcomming and set alarm
+            TripsDatabase.getInstance(LoginActivity.this).tripDao()
+                    .insertTrip(trip).subscribeOn(Schedulers.computation())
+                    .subscribe(new CompletableObserver() {
+                        @Override
+                        public void onSubscribe(@io.reactivex.annotations.NonNull Disposable d) {
+                        }
+
+                        @Override
+                        public void onComplete() {
+                            Log.e("login",trip.getName());
+                        }
+                        @Override
+                        public void onError(@io.reactivex.annotations.NonNull Throwable e) {
+
+                        }
+                    });
+
+
+
         }
     }
 
@@ -152,11 +264,31 @@ public class LoginActivity extends AppCompatActivity {
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            updateUI(account);
+          //  updateUI(account);
+            firbaseGoogleAuth(account);
         } catch (ApiException e) {
-            updateUI(null);
+          //  updateUI(null);
         }
     }
+
+    private void firbaseGoogleAuth(GoogleSignInAccount account) {
+        AuthCredential authCredential= GoogleAuthProvider.getCredential(account.getIdToken(),null);
+
+        fAuth.signInWithCredential(authCredential).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    //Toast.makeText(LoginActivity.this, "successful", Toast.LENGTH_LONG).show();
+                   // AllowGoogleAccountToLogen(account);
+                    updateUI(account);
+                }else{
+
+                }
+            }
+        });
+    }
+
+
 
 
 }

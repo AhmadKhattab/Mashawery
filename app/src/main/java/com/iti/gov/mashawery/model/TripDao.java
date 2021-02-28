@@ -31,4 +31,11 @@ public interface TripDao {
     @Update
     Completable updateTrip(Trip trip);
 
+    @Query("select * from trips_table Where userId=:userId")
+    Single<List<Trip>> getAllTrips(String userId);
+    //
+    @Query("DELETE FROM trips_table")
+    Completable deleteAllRecords();
+
+
 }

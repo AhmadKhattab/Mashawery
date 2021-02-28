@@ -49,6 +49,7 @@
             android:enabled="true"
             android:exported="true" />
 
+
         <activity android:name=".Profile.Profile" />
         <activity android:name=".registeration.view.splashScrean">
             <intent-filter>
@@ -67,7 +68,11 @@
         <activity android:name=".history.view.HistoryActivity" />
         <activity android:name=".trip.create.view.TimePickers" />
         <activity android:name=".registeration.view.LoginActivity" />
+
         <activity android:name=".registeration.view.RegisterActivity" />
+
+        
+
         <activity android:name=".trip.create.view.AddTripActivity" />
 
         <service

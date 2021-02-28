@@ -103,6 +103,10 @@ public class SharedPref {
         return  pref.getString("user_id","default_user");
 
     }
+    // to clear sharedpref
+   public static void clear (){
+        pref.edit().clear().apply();
+    }
 
 
 }

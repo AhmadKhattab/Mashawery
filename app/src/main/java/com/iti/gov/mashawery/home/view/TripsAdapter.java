@@ -65,6 +65,7 @@ public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.TripsViewHol
         holder.binding.btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 onTripListener.onTripStart(currentTrip);
 
             }

@@ -83,7 +83,7 @@ public class FloatingViewService extends Service {
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                 PixelFormat.TRANSLUCENT);
 
-        params.gravity = Gravity.TOP | Gravity.LEFT;
+       params.gravity = Gravity.TOP | Gravity.LEFT;
         params.x = 100;
         params.y = 100;
 
@@ -110,23 +110,29 @@ public class FloatingViewService extends Service {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
 
+                      /*  initialX = params.x;
+                        initialY = params.y;
+                        initialTouchX = event.getRawX();
+                        initialTouchY = event.getRawY();
+                        return true;*/
                         initialX = params.x;
                         initialY = params.y;
                         initialTouchX = event.getRawX();
                         initialTouchY = event.getRawY();
                         return true;
                     case MotionEvent.ACTION_UP:
-                        int Xdiff = (int) (event.getRawX() - initialTouchX);
+                      /*  int Xdiff = (int) (event.getRawX() - initialTouchX);
                         int Ydiff = (int) (event.getRawY() - initialTouchY);
 
                         if (Xdiff < 10 && Ydiff < 10) {
-                            if (isViewCollapsed()) {
+                            if (isViewCollapsed()) {*/
                                 collapsedView.setVisibility(View.GONE);
                                 expandedView.setVisibility(View.VISIBLE);
-                            }
-                        }
+                         //   }
+                       // }
                         return true;
                     case MotionEvent.ACTION_MOVE:
+
                         params.x = initialX + (int) (event.getRawX() - initialTouchX);
                         params.y = initialY + (int) (event.getRawY() - initialTouchY);
                         mWindowManager.updateViewLayout(mFloatingView, params);

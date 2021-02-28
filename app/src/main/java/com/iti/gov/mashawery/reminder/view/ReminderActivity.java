@@ -1,31 +1,42 @@
 package com.iti.gov.mashawery.reminder.view;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.Window;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.iti.gov.mashawery.R;
+import com.iti.gov.mashawery.helpPackag.FloatingViewService;
 import com.iti.gov.mashawery.home.view.MainActivity;
 import com.iti.gov.mashawery.home.viewmodel.HomeViewModel;
+import com.iti.gov.mashawery.localStorage.SharedPref;
 import com.iti.gov.mashawery.model.Trip;
 import com.iti.gov.mashawery.model.repository.TripsRepo;
 import com.iti.gov.mashawery.model.repository.TripsRepoInterface;
+
+import static com.iti.gov.mashawery.home.view.MainActivity.STATUS_DONE;
 
 public class ReminderActivity extends AppCompatActivity {
 
@@ -34,6 +45,8 @@ public class ReminderActivity extends AppCompatActivity {
     private static final int NOTIFICATION_ID = 1234;
     private static AudioManager audioManager;
     private long tripID = 0;
+    private static final int CODE_DRAW_OVER_OTHER_APP_PERMISSION = 2084;
+    Trip incomingTrip;
 
 
     HomeViewModel reminderViewModel;
@@ -45,7 +58,7 @@ public class ReminderActivity extends AppCompatActivity {
 
         //Trip incomingTrip = (Trip) getIntent().getExtras(TripAlarm.TRIP_TAG);
 
-        Trip incomingTrip = (Trip) new Gson().fromJson(getIntent().getStringExtra(TripAlarm.TRIP_TAG), Trip.class);
+       incomingTrip = (Trip) new Gson().fromJson(getIntent().getStringExtra(TripAlarm.TRIP_TAG), Trip.class);
 
         // Create the object of
         // AlertDialog Builder class
@@ -84,6 +97,8 @@ public class ReminderActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog,
                                         int which) {
+                        //floating icoooon
+
 
                         // When the user click Start button
                         // then app will close
@@ -91,15 +106,40 @@ public class ReminderActivity extends AppCompatActivity {
                             mediaPlayer.stop();
                             mediaPlayer.release();
                         }
-                        TripAlarm.cancelAlarm(ReminderActivity.this, incomingTrip.getId());
-                        incomingTrip.setStatus(MainActivity.STATUS_DONE);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            if (!Settings.canDrawOverlays(ReminderActivity.this)) {
+                                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                                        Uri.parse("package:" + getPackageName()));
+                                startActivityForResult(intent, CODE_DRAW_OVER_OTHER_APP_PERMISSION);
+                            } else {
+                                initializeView();
+                            }
+                        } else {
+                            Toast.makeText(ReminderActivity.this, "Your android version does not support this service", Toast.LENGTH_LONG).show();
+                        }
+                        incomingTrip.setStatus(STATUS_DONE);
                         reminderViewModel.updateTripInDB(incomingTrip);
-                        Uri gmmIntentUri = Uri.parse("http://maps.google.com/maps?daddr=" + incomingTrip.getEndPoint());
-                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                        mapIntent.setPackage("com.google.android.apps.maps");
-                        startActivity(mapIntent);
+                        TripAlarm.cancelAlarm(ReminderActivity.this, incomingTrip.getId());
+                        if (checkPermession()) {
+                            if (isLocationEnabled()) {
+                                Uri gmmIntentUri = Uri.parse("google.navigation:q=" + incomingTrip.getEndPoint());
+                                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                                mapIntent.setPackage("com.google.android.apps.maps");
+                                startActivity(mapIntent);
+                            } else {
+                                Toast.makeText(ReminderActivity.this, "Turn the Location on", Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                                startActivity(intent);
+                            }
+                        } else {
+                            //requestPermession();
+                            Uri gmmIntentUri = Uri.parse("google.navigation:q=" + incomingTrip.getEndPoint());
+                            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                            mapIntent.setPackage("com.google.android.apps.maps");
+                            startActivity(mapIntent);
 
-                        finish();
+                        }
+
                     }
                 });
 
@@ -198,6 +238,51 @@ public class ReminderActivity extends AppCompatActivity {
         }
 
 
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stopService(new Intent(this, FloatingViewService.class));
+    }
+    private boolean checkPermession() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        }
+        return false;
+    }
+
+    private void requestPermession() {
+        ActivityCompat.requestPermissions(ReminderActivity.this,
+                new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},
+                1);
+    }
+
+    private boolean isLocationEnabled() {
+        LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        return manager.isProviderEnabled(LocationManager.GPS_PROVIDER) || manager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CODE_DRAW_OVER_OTHER_APP_PERMISSION) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (!Settings.canDrawOverlays(ReminderActivity.this)) {
+                    Toast.makeText(ReminderActivity.this, "permission denied by user.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    }
+
+    private void initializeView() {
+        Intent intent = new Intent(ReminderActivity.this, FloatingViewService.class);
+        intent.putExtra("tripList", new Gson().toJson(incomingTrip.getNoteList().getNoteList()));
+        if (incomingTrip.getNoteList().getNoteList() != null) {
+            SharedPref.setFloatingNotes( new Gson().toJson(incomingTrip.getNoteList().getNoteList()));
+        }
+        startService(intent);
     }
 
 
