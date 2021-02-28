@@ -2,10 +2,12 @@ package com.iti.gov.mashawery.history.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -44,8 +46,8 @@ public class HistoryActivity extends AppCompatActivity {
         configureHistoryRecyclerView();
 
         //Initialize Repo and HistoryViewModel
-        TripsRepoInterface repoInterface = new TripsRepo(this);
-        historyViewModel = new HistoryViewModel();
+        TripsRepoInterface repoInterface = TripsRepo.getInstance(this);
+        historyViewModel = ViewModelProviders.of(this).get(HistoryViewModel.class);
         historyViewModel.setTripsRepoInterface(repoInterface);
 
         //Set current user id to history view model
@@ -73,6 +75,14 @@ public class HistoryActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<Trip> trips) {
                 historyAdapter.setHistoryList(trips);
+            }
+        });
+
+        binding.fbViewPrevPlaces.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HistoryActivity.this, HistoryMapActivity.class);
+                startActivity(intent);
             }
         });
 

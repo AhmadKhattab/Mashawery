@@ -33,7 +33,7 @@ public class AddTripActivity extends AppCompatActivity {
         openFragment(tripInfoFragment);
 
 
-        TripsRepoInterface tripsRepoInterface = new TripsRepo(this);
+        TripsRepoInterface tripsRepoInterface = TripsRepo.getInstance(this);
         tripViewModel = ViewModelProviders.of(this).get(TripViewModel.class);
         tripViewModel.setTripsRepoInterface(tripsRepoInterface);
 

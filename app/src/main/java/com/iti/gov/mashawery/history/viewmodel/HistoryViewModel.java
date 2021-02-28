@@ -3,6 +3,7 @@ package com.iti.gov.mashawery.history.viewmodel;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModel;
 
 import com.iti.gov.mashawery.model.Trip;
 import com.iti.gov.mashawery.model.repository.TripsRepoInterface;
@@ -10,7 +11,7 @@ import com.iti.gov.mashawery.model.repository.TripsRepoInterface;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HistoryViewModel {
+public class HistoryViewModel extends ViewModel{
 
     private TripsRepoInterface tripsRepoInterface;
     public MediatorLiveData<List<Trip>> historyListLiveData;

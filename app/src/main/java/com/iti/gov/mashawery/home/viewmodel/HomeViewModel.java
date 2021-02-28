@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModel;
 
 import com.iti.gov.mashawery.model.Trip;
 import com.iti.gov.mashawery.model.repository.TripsRepoInterface;
@@ -11,7 +12,7 @@ import com.iti.gov.mashawery.model.repository.TripsRepoInterface;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeViewModel {
+public class HomeViewModel extends ViewModel {
 
     private TripsRepoInterface tripsRepoInterface;
     public MediatorLiveData<List<Trip>> tripListLiveData;
@@ -62,4 +63,6 @@ public class HomeViewModel {
     public void updateTripInDB(Trip trip) {
         tripsRepoInterface.updateTrip(trip);
     }
+
+
 }
