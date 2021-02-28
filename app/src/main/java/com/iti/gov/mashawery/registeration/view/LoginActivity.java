@@ -29,12 +29,26 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.iti.gov.mashawery.R;
 
 import com.iti.gov.mashawery.databinding.ActivityLoginBinding;
 import com.iti.gov.mashawery.home.view.MainActivity;
 import com.iti.gov.mashawery.localStorage.SharedPref;
+import com.iti.gov.mashawery.model.FirebaseTrip;
+import com.iti.gov.mashawery.model.FirebaseTripDao;
+import com.iti.gov.mashawery.model.NotesHolder;
+import com.iti.gov.mashawery.model.Trip;
+import com.iti.gov.mashawery.model.TripsDatabase;
 import com.iti.gov.mashawery.model.User;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import io.reactivex.CompletableObserver;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class LoginActivity extends AppCompatActivity {
     FirebaseAuth fAuth;
@@ -98,6 +112,7 @@ public class LoginActivity extends AppCompatActivity {
                                        SharedPref.setUserEmail(email);
                                        SharedPref.setUserId(userID);
                                        Log.e("le",email);
+                                       syncData();
                                        startActivity(intent);
                                        finish();
                                    } else {
@@ -149,7 +164,9 @@ public class LoginActivity extends AppCompatActivity {
                     User user = snapshot.getValue(User.class);
                     if(user != null){
                         SharedPref.setUserId(userID);
-                        // syncData
+                         syncData();
+                       /* Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(intent); */
                         //gotoMainActivity
                     }
                     else{
@@ -182,6 +199,57 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
         }  else {
             Toast.makeText(this, "Please login with a valid Google account", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void syncData() {
+        String currentUserId=fAuth.getCurrentUser().getUid();
+        FirebaseTripDao.getUserTrips(currentUserId, new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                List <Trip>  tripList ;
+                tripList=new ArrayList<>();
+                for (DataSnapshot dataSnapshot:snapshot.getChildren()){
+                    FirebaseTrip trip =dataSnapshot.getValue(FirebaseTrip.class);
+                    Log.e("login",trip.getName());
+                    tripList.add(new Trip(trip.getId(),trip.getUserId(),trip.getName(),trip.getStartPoint(),trip.getEndPoint(),trip.getDate(), trip.getTime(),
+                            trip.getType(),trip.getRepetition(),trip.getStatus(),new Gson().fromJson(trip.getNoteList(),new TypeToken<NotesHolder>() { }.getType())));
+                }
+                saveFromFirebaseToRoom(tripList);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+    }
+
+    private void saveFromFirebaseToRoom(List<Trip> tripList) {
+        for (Trip trip:tripList ){
+            //please check if the data and time if status upcomming and set alarm
+            TripsDatabase.getInstance(LoginActivity.this).tripDao()
+                    .insertTrip(trip).subscribeOn(Schedulers.computation())
+                    .subscribe(new CompletableObserver() {
+                        @Override
+                        public void onSubscribe(@io.reactivex.annotations.NonNull Disposable d) {
+                        }
+
+                        @Override
+                        public void onComplete() {
+                            Log.e("login",trip.getName());
+                        }
+                        @Override
+                        public void onError(@io.reactivex.annotations.NonNull Throwable e) {
+
+                        }
+                    });
+
+
+
         }
     }
 

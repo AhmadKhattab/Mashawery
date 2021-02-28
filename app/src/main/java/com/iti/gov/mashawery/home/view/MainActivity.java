@@ -50,6 +50,7 @@ import com.iti.gov.mashawery.model.Trip;
 import com.iti.gov.mashawery.model.repository.TripsRepo;
 import com.iti.gov.mashawery.model.repository.TripsRepoInterface;
 
+import com.iti.gov.mashawery.reminder.view.ReminderActivity;
 import com.iti.gov.mashawery.reminder.view.TripAlarm;
 import com.iti.gov.mashawery.trip.create.view.AddTripActivity;
 import com.iti.gov.mashawery.trip.edit.view.EditTripActivity;
@@ -128,19 +129,22 @@ public class MainActivity extends AppCompatActivity {
 
             public void onTripStart(Trip trip) {
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+              if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     if (!Settings.canDrawOverlays(MainActivity.this)) {
                         Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                                 Uri.parse("package:" + getPackageName()));
                         startActivityForResult(intent, CODE_DRAW_OVER_OTHER_APP_PERMISSION);
                     } else {
-                      /*  Intent intent = new Intent(MainActivity.this, FloatingViewService.class);
+
+                      Intent intent = new Intent(MainActivity.this, FloatingViewService.class);
                         intent.putExtra("tripList", new Gson().toJson(trip.getNoteList().getNoteList()));
-                        startService(intent);*/
-                        Intent intent = new Intent(MainActivity.this, FloatingViewService.class);
+                       /* startService(intent);
+                        Intent intent = new Intent(MainActivity.this, FloatingViewService.class);*/
 
                         if (trip.getNoteList().getNoteList() != null) {
                             SharedPref.setFloatingNotes( new Gson().toJson(trip.getNoteList().getNoteList()));
+                           // intent.putExtra("tripList", new Gson().toJson(trip.getNoteList().getNoteList()));
                             Log.i("tripList notes", (trip.getNoteList().getNoteList().toString()));
                         }
                        startService(intent);
@@ -156,12 +160,10 @@ public class MainActivity extends AppCompatActivity {
                 //viewModel.updateTrip("Done", tripId);
 
                 //Uri gmmIntentUri = Uri.parse("google.navigation:q=" + address);
+
                 if (checkPermession()) {
-                    if (isLocationEnabled()) {
-                       /* Uri gmmIntentUri = Uri.parse("google.navigation:q=" + trip.getEndPoint());
-                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                        mapIntent.setPackage("com.google.android.apps.maps");
-                        startActivity(mapIntent);*/
+
+                   if (isLocationEnabled()) {
                         Uri gmmIntentUri = Uri.parse("http://maps.google.com/maps?daddr=" + trip.getEndPoint());
                         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                         mapIntent.setPackage("com.google.android.apps.maps");
@@ -183,6 +185,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     requestPermession();
                 }
+
 
             }
 
@@ -405,6 +408,7 @@ public class MainActivity extends AppCompatActivity {
 
         deleteTripDialog.show();
     }
+
 
 
 
