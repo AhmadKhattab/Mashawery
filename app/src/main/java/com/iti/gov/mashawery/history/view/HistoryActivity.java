@@ -10,11 +10,13 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.iti.gov.mashawery.R;
 import com.iti.gov.mashawery.databinding.ActivityHistoryBinding;
 import com.iti.gov.mashawery.databinding.DeleteConfirmationDialogBinding;
 import com.iti.gov.mashawery.history.viewmodel.HistoryViewModel;
+import com.iti.gov.mashawery.history.viewmodel.HistoryViewModelFactory;
 import com.iti.gov.mashawery.home.view.OnTripListener;
 import com.iti.gov.mashawery.localStorage.SharedPref;
 import com.iti.gov.mashawery.model.Note;
@@ -46,9 +48,9 @@ public class HistoryActivity extends AppCompatActivity {
         configureHistoryRecyclerView();
 
         //Initialize Repo and HistoryViewModel
-        TripsRepoInterface repoInterface = TripsRepo.getInstance(this);
-        historyViewModel = ViewModelProviders.of(this).get(HistoryViewModel.class);
-        historyViewModel.setTripsRepoInterface(repoInterface);
+        historyViewModel = ViewModelProviders.of(this, new HistoryViewModelFactory(TripsRepo.getInstance(this)))
+                .get(HistoryViewModel.class);
+
 
         //Set current user id to history view model
         SharedPref.createPrefObject(this);
@@ -81,8 +83,20 @@ public class HistoryActivity extends AppCompatActivity {
         binding.fbViewPrevPlaces.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(HistoryActivity.this, HistoryMapActivity.class);
-                startActivity(intent);
+
+                historyViewModel.navigateToHistoryOnMap();
+            }
+        });
+
+        historyViewModel.allowedToNavigateToHistoryMap.observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean) {
+                    Intent intent = new Intent(HistoryActivity.this, HistoryMapActivity.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(HistoryActivity.this, "There's no history to be shown", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
