@@ -71,7 +71,7 @@
 
         <activity android:name=".registeration.view.RegisterActivity" />
 
-        
+
 
         <activity android:name=".trip.create.view.AddTripActivity" />
 

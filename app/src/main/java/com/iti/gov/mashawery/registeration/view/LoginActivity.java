@@ -47,6 +47,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.CompletableObserver;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
@@ -102,7 +107,7 @@ public class LoginActivity extends AppCompatActivity {
                                @Override
                                public void onComplete(@NonNull Task<AuthResult> task) {
                                    if (task.isSuccessful()) {
-                                       Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//                                       Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                        userID = fAuth.getCurrentUser().getUid();
 
                                       // progressDialog.dismiss();
@@ -113,7 +118,7 @@ public class LoginActivity extends AppCompatActivity {
                                        SharedPref.setUserId(userID);
                                        Log.e("le",email);
                                        syncData();
-                                       startActivity(intent);
+//                                       startActivity(intent);
                                        finish();
                                    } else {
                                        Toast.makeText(LoginActivity.this,
@@ -229,28 +234,70 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void saveFromFirebaseToRoom(List<Trip> tripList) {
-        for (Trip trip:tripList ){
-            //please check if the data and time if status upcomming and set alarm
-            TripsDatabase.getInstance(LoginActivity.this).tripDao()
-                    .insertTrip(trip).subscribeOn(Schedulers.computation())
-                    .subscribe(new CompletableObserver() {
-                        @Override
-                        public void onSubscribe(@io.reactivex.annotations.NonNull Disposable d) {
-                        }
 
-                        @Override
-                        public void onComplete() {
-                            Log.e("login",trip.getName());
-                        }
-                        @Override
-                        public void onError(@io.reactivex.annotations.NonNull Throwable e) {
+        Observable<Trip> tripsObservable = Observable.fromIterable(tripList);
 
-                        }
-                    });
+        tripsObservable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Trip>() {
+            @Override
+            public void onSubscribe(@io.reactivex.annotations.NonNull Disposable d) {
 
+            }
 
+            @Override
+            public void onNext(@io.reactivex.annotations.NonNull Trip trip) {
+                TripsDatabase.getInstance(LoginActivity.this).tripDao()
+                        .insertTrip(trip).subscribeOn(Schedulers.computation())
+                        .subscribe(new CompletableObserver() {
+                            @Override
+                            public void onSubscribe(@io.reactivex.annotations.NonNull Disposable d) {
+                            }
 
-        }
+                            @Override
+                            public void onComplete() {
+                                Log.e("login",trip.getName());
+                            }
+                            @Override
+                            public void onError(@io.reactivex.annotations.NonNull Throwable e) {
+
+                            }
+                        });
+            }
+
+            @Override
+            public void onError(@io.reactivex.annotations.NonNull Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+//        for (Trip trip:tripList){
+//            //please check if the data and time if status upcomming and set alarm
+//            TripsDatabase.getInstance(LoginActivity.this).tripDao()
+//                    .insertTrip(trip).subscribeOn(Schedulers.computation())
+//                    .subscribe(new CompletableObserver() {
+//                        @Override
+//                        public void onSubscribe(@io.reactivex.annotations.NonNull Disposable d) {
+//                        }
+//
+//                        @Override
+//                        public void onComplete() {
+//                            Log.e("login",trip.getName());
+//                        }
+//                        @Override
+//                        public void onError(@io.reactivex.annotations.NonNull Throwable e) {
+//
+//                        }
+//                    });
+//
+//
+//
+//        }
     }
 
     @Override
