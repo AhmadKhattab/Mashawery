@@ -65,16 +65,28 @@ public class EditTripDateAndTimeFragment extends Fragment {
         //Declare EditTripViewModel
         editTripViewModel = ViewModelProviders.of(getActivity()).get(EditTripViewModel.class);
 
+        if (editTripViewModel.tripLiveData.getValue().getDate() != null
+                && editTripViewModel.tripLiveData.getValue().getTime() != null) {
 
-        String[] timeSplit = editTripViewModel.tripLiveData.getValue().getTime().split(":");
-        hour = Integer.parseInt(timeSplit[0]);
-        min = Integer.parseInt(timeSplit[1]);
+            String[] timeSplit = editTripViewModel.tripLiveData.getValue().getTime().split(":");
+            hour = Integer.parseInt(timeSplit[0]);
+            min = Integer.parseInt(timeSplit[1]);
 
-        String[] dateSplit = editTripViewModel.tripLiveData.getValue().getDate().split("/");
+            String[] dateSplit = editTripViewModel.tripLiveData.getValue().getDate().split("/");
 
-        yearVm = Integer.parseInt(dateSplit[2]);
-        monthVm = Integer.parseInt(dateSplit[1]);
-        dayVm = Integer.parseInt(dateSplit[0]);
+            yearVm = Integer.parseInt(dateSplit[2]);
+            monthVm = Integer.parseInt(dateSplit[1]);
+            dayVm = Integer.parseInt(dateSplit[0]);
+
+        } else {
+            Calendar calendar = Calendar.getInstance();
+            hour = calendar.get(Calendar.HOUR_OF_DAY);
+            min = calendar.get(Calendar.MINUTE);
+            yearVm = calendar.get(Calendar.YEAR);
+            monthVm = calendar.get(Calendar.MONTH);
+            dayVm = calendar.get(Calendar.DAY_OF_MONTH);
+        }
+
 
 
         binding.tvTime.setOnClickListener(new View.OnClickListener() {

@@ -137,7 +137,7 @@ public class EditTripNotesFragment extends Fragment {
         });
 
 
-
+        // Initialize adapter with notes
         notesAdapter.setNoteList(editTripViewModel.noteListLiveData.getValue());
 
         notesAdapter.setNoteListenerInterface(new NoteListenerInterface() {

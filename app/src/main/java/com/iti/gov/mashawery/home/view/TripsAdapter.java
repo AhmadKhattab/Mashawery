@@ -42,18 +42,27 @@ public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.TripsViewHol
     public void onBindViewHolder(@NonNull TripsViewHolder holder, int position) {
 
         Trip currentTrip = tripList.get(position);
-
-        Month month = Month.of(Integer.parseInt(currentTrip.getDate().split("[/]")[1]));
-
         holder.binding.tvTripName.setText(currentTrip.getName());
         holder.binding.tvStartPoint.setText(currentTrip.getStartPoint());
         holder.binding.tvEndPoint.setText(currentTrip.getEndPoint());
 
+        if(currentTrip.getDate() != null && currentTrip.getTime() != null) {
 
-        holder.binding.tvDay.setText(currentTrip.getDate().split("[/]")[0]);
-        holder.binding.tvMonth.setText(month.toString().substring(0, 3));
-        holder.binding.tvTime.setText(currentTrip.getTime());
+            Month month = null;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                month = Month.of(Integer.parseInt(currentTrip.getDate().split("[/]")[1]));
+            }
 
+            holder.binding.tvDay.setText(currentTrip.getDate().split("[/]")[0]);
+            holder.binding.tvMonth.setText(month.toString().substring(0, 3));
+            holder.binding.tvTime.setText(currentTrip.getTime());
+        } else {
+
+            holder.binding.tvDay.setText(R.string.empty);
+            holder.binding.tvMonth.setText(R.string.empty);
+            holder.binding.tvTime.setText(R.string.empty);
+
+        }
 
         holder.binding.constraint.setOnClickListener(new View.OnClickListener() {
             @Override

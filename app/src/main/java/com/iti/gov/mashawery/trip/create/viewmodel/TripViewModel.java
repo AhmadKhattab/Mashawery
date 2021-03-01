@@ -4,6 +4,7 @@ package com.iti.gov.mashawery.trip.create.viewmodel;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.iti.gov.mashawery.R;
 import com.iti.gov.mashawery.localStorage.SharedPref;
 import com.iti.gov.mashawery.model.Note;
 import com.iti.gov.mashawery.model.Trip;
@@ -69,6 +70,20 @@ public class TripViewModel extends ViewModel {
         NotesHolder notesHolder = new NotesHolder(noteListLiveData.getValue());
         tripLiveData.getValue().setNoteList(notesHolder);
         tripsRepoInterface.insertTrip(tripLiveData.getValue());
+
+        if(tripLiveData.getValue().getType().equals("Round trip")) {
+            Trip roundTrip = new Trip();
+            List<Note> emptyNoteList = new ArrayList<>();
+
+            roundTrip.setName(tripLiveData.getValue().getName().concat(" round trip"));
+            roundTrip.setUserId(tripLiveData.getValue().getUserId());
+            roundTrip.setStartPoint(tripLiveData.getValue().getEndPoint());
+            roundTrip.setEndPoint(tripLiveData.getValue().getStartPoint());
+            roundTrip.setRepetition("None");
+            roundTrip.setType("One way");
+            roundTrip.setNoteList(new NotesHolder(emptyNoteList));
+            tripsRepoInterface.insertTrip(roundTrip);
+        }
     }
 
     private void initializeNotesLiveData() {

@@ -215,7 +215,7 @@
             android:button="@android:color/transparent"
             android:elevation="4dp"
             android:padding="16dp"
-            android:text="Round trip"
+            android:text="@string/round_trip"
             android:textColor="@drawable/color_selected" />
 
 
