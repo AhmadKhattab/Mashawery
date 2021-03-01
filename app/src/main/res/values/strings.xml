@@ -58,7 +58,6 @@
     <string name="edit_trip">Edit Trip</string>
     <string name="update">Update</string>
     <string name="daily">Daily</string>
-    <string name="round_trip">Round trip</string>
     <string name="snooze">Snooze</string>
     <string name="start">Start</string>
     <string name="cancel">Cancel</string>
@@ -69,5 +68,7 @@
     <string name="are_you_sure_to_delete_note">Are you sure you want to delete this note?</string>
 
     <string name="map_api_key" translatable="false">AIzaSyDzVXde0WUXvI46rNXrWRmlFADSzFsghbc</string>
+    <string name="round_trip">Round trip</string>
+    <string name="empty">Empty</string>
 
 </resources>
