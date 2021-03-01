@@ -42,8 +42,10 @@ import com.iti.gov.mashawery.model.NotesHolder;
 import com.iti.gov.mashawery.model.Trip;
 import com.iti.gov.mashawery.model.TripsDatabase;
 import com.iti.gov.mashawery.model.User;
+import com.iti.gov.mashawery.reminder.view.TripAlarm;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import io.reactivex.CompletableObserver;
@@ -234,9 +236,23 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void saveFromFirebaseToRoom(List<Trip> tripList) {
-
-        Observable<Trip> tripsObservable = Observable.fromIterable(tripList);
-
+        //My filter goes here
+        Observable <Trip>  tripsObservable  = Observable.fromIterable(tripList).filter(trip -> {
+            if(trip.getStatus() == 0){
+                if(TripAlarm.getTripDateAndTime(trip).getTimeInMillis()>Calendar.getInstance().getTimeInMillis()){
+                    TripAlarm.setAlarm(trip, this);
+                }else if (trip.getDate().equals(null)){
+                    /*Do Noting*/
+                }else{
+                    trip.setStatus(MainActivity.STATUS_CANCEL);
+                }
+            }
+            return true;
+        });
+        tripsObservable.forEach(trip -> Log.i("TAAAG", trip.getName()));
+        //ends here
+       // Observable<Trip> tripsObservable = Observable.fromIterable(tripList);
+        //Commented the code and changed the oberver they subscribe on
         tripsObservable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Trip>() {
             @Override
