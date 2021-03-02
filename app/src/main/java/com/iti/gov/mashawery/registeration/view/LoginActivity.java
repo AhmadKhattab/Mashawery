@@ -81,6 +81,7 @@ public class LoginActivity extends AppCompatActivity {
         fDatabase = FirebaseDatabase.getInstance();
         SignInButton signInButton =binding.googleSignInButton;
         signInButton.setSize(SignInButton.SIZE_STANDARD);
+
         SharedPref.createPrefObject(this);
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,6 +104,7 @@ public class LoginActivity extends AppCompatActivity {
                                public void onComplete(@NonNull Task<AuthResult> task) {
                                    if (task.isSuccessful()) {
                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+
                                        userID = fAuth.getCurrentUser().getUid();
 
                                       // progressDialog.dismiss();
@@ -114,6 +116,7 @@ public class LoginActivity extends AppCompatActivity {
                                        Log.e("le",email);
                                        syncData();
                                        startActivity(intent);
+                                      // progressDialog.dismiss();
                                        finish();
                                    } else {
                                        Toast.makeText(LoginActivity.this,
@@ -139,8 +142,8 @@ public class LoginActivity extends AppCompatActivity {
 
            }
        });
-    }/*
-    @Override
+    }
+  /*  @Override
     protected void onStart() {
         super.onStart();
         account = GoogleSignIn.getLastSignedInAccount(this);
@@ -191,12 +194,16 @@ public class LoginActivity extends AppCompatActivity {
                 }
             });
 
+
             Intent intent = new Intent(this, MainActivity.class);
             SharedPref.setUserEmail(account.getEmail());
             SharedPref.setLoginWithFirebase(false);
             Log.i("gmailacc",account.getEmail());
+            SharedPref.setLogin(true);
 
             startActivity(intent);
+            finish();
+          //  progressDialog.dismiss();
         }  else {
             Toast.makeText(this, "Please login with a valid Google account", Toast.LENGTH_SHORT).show();
         }
@@ -214,8 +221,14 @@ public class LoginActivity extends AppCompatActivity {
                     Log.e("login",trip.getName());
                     tripList.add(new Trip(trip.getId(),trip.getUserId(),trip.getName(),trip.getStartPoint(),trip.getEndPoint(),trip.getDate(), trip.getTime(),
                             trip.getType(),trip.getRepetition(),trip.getStatus(),new Gson().fromJson(trip.getNoteList(),new TypeToken<NotesHolder>() { }.getType())));
-                }
+                }//habd
+
+
+
+
                 saveFromFirebaseToRoom(tripList);
+                //
+
 
             }
 
