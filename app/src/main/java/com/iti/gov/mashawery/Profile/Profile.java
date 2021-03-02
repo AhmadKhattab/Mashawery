@@ -75,8 +75,10 @@ public class Profile extends AppCompatActivity {
                 List<Trip> allUpcomingTrips = TripsRepo.getInstance(Profile.this).tripListLiveData.getValue();
                 Log.i("TAG", "***************** "+"Size:" + allUpcomingTrips.size()+" ****************");
                 for(Trip trip :allUpcomingTrips){
+
                     TripAlarm.cancelAlarm(Profile.this, trip.getId());
                     Log.i("TAAAG", "*****************ALARM Should be canceled*****************");
+
                 }
                 /*My Habd begins here**/
                 SharedPref.setLogin(false);

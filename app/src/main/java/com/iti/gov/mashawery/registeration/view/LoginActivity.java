@@ -236,24 +236,34 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void saveFromFirebaseToRoom(List<Trip> tripList) {
-        //My filter goes here
-        Observable <Trip>  tripsObservable  = Observable.fromIterable(tripList).filter(trip -> {
+       /* for(Trip trip: tripList){
             if(trip.getStatus() == 0){
                 if(TripAlarm.getTripDateAndTime(trip).getTimeInMillis()>Calendar.getInstance().getTimeInMillis()){
                     TripAlarm.setAlarm(trip, this);
-                }else if (trip.getDate().equals(null)){
-                    /*Do Noting*/
-                }else{
+
+                }else if( trip.getDate()!=null){
                     trip.setStatus(MainActivity.STATUS_CANCEL);
+                }
+            }
+        }*/
+        //My filter goes here
+        Observable <Trip>  tripAlarmFilter = Observable.fromIterable(tripList) .filter(trip -> {
+            if(trip.getStatus() == 0){
+                if (trip.getDate()!=null){
+                    if(TripAlarm.getTripDateAndTime(trip).getTimeInMillis()>Calendar.getInstance().getTimeInMillis()){
+                        TripAlarm.setAlarm(trip, this);
+
+                    }else {
+                        trip.setStatus(MainActivity.STATUS_CANCEL);
+                    }
+
                 }
             }
             return true;
         });
-        tripsObservable.forEach(trip -> Log.i("TAAAG", trip.getName()));
         //ends here
-       // Observable<Trip> tripsObservable = Observable.fromIterable(tripList);
-        //Commented the code and changed the oberver they subscribe on
-        tripsObservable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+        Observable<Trip> tripsObservable = Observable.fromIterable(tripList);
+        tripAlarmFilter.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Trip>() {
             @Override
             public void onSubscribe(@io.reactivex.annotations.NonNull Disposable d) {
