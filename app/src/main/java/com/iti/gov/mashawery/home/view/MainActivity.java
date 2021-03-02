@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -99,9 +100,10 @@ public class MainActivity extends AppCompatActivity {
         tripsAdapter = new TripsAdapter();
         configureTripsRecyclerView();
 
-        TripsRepoInterface tripsRepoInterface = new TripsRepo(this);
+        TripsRepoInterface tripsRepoInterface = TripsRepo.getInstance(this);
 
-        homeViewModel = new HomeViewModel();
+//        homeViewModel = new HomeViewModel();
+        homeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
         homeViewModel.setTripsRepoInterface(tripsRepoInterface);
 
 
@@ -263,6 +265,18 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         runBackgroundPermissions();
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
     }
 
     private void checkDrawOverAppsPermissionsDialog() {

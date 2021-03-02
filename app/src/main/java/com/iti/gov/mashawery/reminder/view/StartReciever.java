@@ -20,7 +20,7 @@ public class StartReciever extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        TripsRepoInterface tripsRepoInterface= new TripsRepo(context);
+        TripsRepoInterface tripsRepoInterface= TripsRepo.getInstance(context);
         HomeViewModel reminderViewModel =new HomeViewModel();
         reminderViewModel.setTripsRepoInterface(tripsRepoInterface);
         Trip trip = (Trip) new Gson().fromJson(intent.getStringExtra(MainActivity.TRIP_ID), Trip.class);

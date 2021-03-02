@@ -5,6 +5,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.Manifest;
 import android.app.NotificationChannel;
@@ -83,9 +84,10 @@ public class ReminderActivity extends AppCompatActivity {
         // Set the positive button with yes name
         // OnClickListener method is use of
         // DialogInterface interface.
-        TripsRepoInterface tripsRepoInterface = new TripsRepo(this);
+        TripsRepoInterface tripsRepoInterface = TripsRepo.getInstance(this);
 
-        reminderViewModel = new HomeViewModel();
+//        reminderViewModel = new HomeViewModel();
+        reminderViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
         reminderViewModel.setTripsRepoInterface(tripsRepoInterface);
 
 

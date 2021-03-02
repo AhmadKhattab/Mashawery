@@ -28,7 +28,7 @@ public class EditTripActivity extends AppCompatActivity {
 
 
         //Declare TripsRep
-        TripsRepoInterface repoInterface = new TripsRepo(this);
+        TripsRepoInterface repoInterface = TripsRepo.getInstance(this);
 
         //Declare ViewModel and set Repo
         EditTripViewModel editTripViewModel = ViewModelProviders.of(this).get(EditTripViewModel.class);

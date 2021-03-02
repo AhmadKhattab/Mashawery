@@ -20,18 +20,32 @@ import io.reactivex.schedulers.Schedulers;
 
 public class TripsRepo implements TripsRepoInterface {
 
-    private MutableLiveData<List<Trip>> tripListLiveData = new MutableLiveData<>();
+    public MutableLiveData<List<Trip>> tripListLiveData = new MutableLiveData<>();
     private MutableLiveData<List<Trip>> historyListLiveData = new MutableLiveData<>();
     private MutableLiveData<Trip> tripLiveData = new MutableLiveData<>();
     private TripsDatabase tripsDatabase;
     private Context context;
+    private static TripsRepo instance;
 
-    public TripsRepo(Context context) {
+    private TripsRepo(Context context) {
         this.context = context;
         tripsDatabase = TripsDatabase.getInstance(context);
         tripListLiveData.setValue(new ArrayList<>());
         historyListLiveData.setValue(new ArrayList<>());
         tripLiveData.setValue(new Trip());
+    }
+
+    public static TripsRepo getInstance (Context context) {
+
+        if(instance == null) {
+            synchronized (TripsRepo.class) {
+                if(instance == null) {
+
+                    instance = new TripsRepo(context);
+                }
+            }
+        }
+        return instance;
     }
 
     @Override

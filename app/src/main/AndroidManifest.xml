@@ -2,17 +2,21 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.iti.gov.mashawery">
 
+    <!--
+         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
+         Google Maps Android API v2, but you must specify either coarse or fine
+         location permissions for the "MyLocation" functionality.
+    -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACTION_MANAGE_OVERLAY_PERMISSION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.ACTION_MANAGE_OVERLAY_PERMISSION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -22,22 +26,31 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Mashawery">
 
-
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/.
+        -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/map_api_key" />
+            android:value="AIzaSyDzVXde0WUXvI46rNXrWRmlFADSzFsghbc" />
+
+        <activity android:name=".history.view.HistoryMapActivity" />
 
         <receiver
             android:name=".reminder.view.CancelReciever"
             android:enabled="true"
-            android:exported="true"></receiver>
+            android:exported="true" />
         <receiver
             android:name=".reminder.view.StartReciever"
             android:enabled="true"
             android:exported="true" />
 
 
-        <activity android:name=".Profile.Profile"></activity>
+        <activity android:name=".Profile.Profile" />
         <activity android:name=".registeration.view.splashScrean">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -45,7 +58,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".reminder.view.ReminderActivity"
             android:excludeFromRecents="false"
@@ -57,9 +69,10 @@
         <activity android:name=".trip.create.view.TimePickers" />
         <activity android:name=".registeration.view.LoginActivity" />
 
-        <activity android:name=".registeration.view.RegisterActivity">
+        <activity android:name=".registeration.view.RegisterActivity" />
 
-        </activity>
+
+
         <activity android:name=".trip.create.view.AddTripActivity" />
 
         <service

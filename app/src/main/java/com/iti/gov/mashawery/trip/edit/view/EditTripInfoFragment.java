@@ -116,7 +116,7 @@ public class EditTripInfoFragment extends Fragment {
 
 
         EditTripViewModel editTripViewModel = ViewModelProviders.of(getActivity()).get(EditTripViewModel.class);
-        editTripViewModel.setTripsRepoInterface(new TripsRepo(getActivity()));
+        editTripViewModel.setTripsRepoInterface(TripsRepo.getInstance(getActivity()));
 
         //Observe the received trip id and get the selected trip
         editTripViewModel.tripIdLiveData.observe(getActivity(), new Observer<Integer>() {
