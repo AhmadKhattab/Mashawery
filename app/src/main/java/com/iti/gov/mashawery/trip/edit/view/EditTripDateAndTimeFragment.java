@@ -181,9 +181,15 @@ public class EditTripDateAndTimeFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
 
-        //Initialize date and time
-        binding.tvDate.setText(editTripViewModel.tripLiveData.getValue().getDate());
-        binding.tvTime.setText(editTripViewModel.tripLiveData.getValue().getTime());
+        if (editTripViewModel.tripLiveData.getValue().getDate() != null
+                && editTripViewModel.tripLiveData.getValue().getTime() != null) {
+
+            //Initialize date and time
+            binding.tvDate.setText(editTripViewModel.tripLiveData.getValue().getDate());
+            binding.tvTime.setText(editTripViewModel.tripLiveData.getValue().getTime());
+
+        }
+
 
         editTripViewModel.editNotesFlag.observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override

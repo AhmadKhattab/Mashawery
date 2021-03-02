@@ -8,6 +8,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -23,11 +24,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.iti.gov.mashawery.R;
+import com.iti.gov.mashawery.databinding.ReminderDialogBinding;
 import com.iti.gov.mashawery.helpPackag.FloatingViewService;
 import com.iti.gov.mashawery.home.view.MainActivity;
 import com.iti.gov.mashawery.home.viewmodel.HomeViewModel;
@@ -58,7 +61,7 @@ public class ReminderActivity extends AppCompatActivity {
 
         //Trip incomingTrip = (Trip) getIntent().getExtras(TripAlarm.TRIP_TAG);
 
-       incomingTrip = (Trip) new Gson().fromJson(getIntent().getStringExtra(TripAlarm.TRIP_TAG), Trip.class);
+        incomingTrip = (Trip) new Gson().fromJson(getIntent().getStringExtra(TripAlarm.TRIP_TAG), Trip.class);
 
         // Create the object of
         // AlertDialog Builder class
@@ -191,7 +194,100 @@ public class ReminderActivity extends AppCompatActivity {
         AlertDialog alertDialog = builder.create();
 
         // Show the Alert Dialog box
-        alertDialog.show();
+//        alertDialog.show();
+
+
+        ReminderDialogBinding reminderDialogBinding = ReminderDialogBinding.inflate(getLayoutInflater());
+
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(reminderDialogBinding.getRoot());
+
+
+        // On start trip clicked
+        reminderDialogBinding.btnStartTrip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mediaPlayer.isPlaying()) {
+                    mediaPlayer.stop();
+                    mediaPlayer.release();
+                }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    if (!Settings.canDrawOverlays(ReminderActivity.this)) {
+                        Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                                Uri.parse("package:" + getPackageName()));
+                        startActivityForResult(intent, CODE_DRAW_OVER_OTHER_APP_PERMISSION);
+                    } else {
+                        initializeView();
+                    }
+                } else {
+                    Toast.makeText(ReminderActivity.this, "Your android version does not support this service", Toast.LENGTH_LONG).show();
+                }
+                incomingTrip.setStatus(STATUS_DONE);
+                reminderViewModel.updateTripInDB(incomingTrip);
+                TripAlarm.cancelAlarm(ReminderActivity.this, incomingTrip.getId());
+                if (checkPermession()) {
+                    if (isLocationEnabled()) {
+                        Uri gmmIntentUri = Uri.parse("google.navigation:q=" + incomingTrip.getEndPoint());
+                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                        mapIntent.setPackage("com.google.android.apps.maps");
+                        startActivity(mapIntent);
+                    } else {
+                        Toast.makeText(ReminderActivity.this, "Turn the Location on", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        startActivity(intent);
+                    }
+                } else {
+                    //requestPermession();
+                    Uri gmmIntentUri = Uri.parse("google.navigation:q=" + incomingTrip.getEndPoint());
+                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                    mapIntent.setPackage("com.google.android.apps.maps");
+                    startActivity(mapIntent);
+
+                }
+            }
+        });
+
+
+        // On cancel trip clicked
+        reminderDialogBinding.btnCancelTrip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mediaPlayer.isPlaying()) {
+                    mediaPlayer.stop();
+                    mediaPlayer.release();
+                }
+                dialog.cancel();
+                TripAlarm.cancelAlarm(ReminderActivity.this, incomingTrip.getId());
+
+                incomingTrip.setStatus(MainActivity.STATUS_CANCEL);
+                reminderViewModel.updateTripInDB(incomingTrip);
+
+
+                finish();
+            }
+        });
+
+
+        reminderDialogBinding.btnSnoozeTrip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (mediaPlayer.isPlaying()) {
+                    mediaPlayer.stop();
+                    mediaPlayer.release();
+                }
+                finish();
+                showNotification(incomingTrip);
+
+            }
+        });
+
+        reminderDialogBinding.tvMessage.setText("Remember your trip, Dear");
+        reminderDialogBinding.tvTripName.setText(incomingTrip.getName());
+
+
+        dialog.setCancelable(false);
+        dialog.show();
         mediaPlayer.start();
 
     }
@@ -201,16 +297,16 @@ public class ReminderActivity extends AppCompatActivity {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
 
         Intent startIntent = new Intent(ReminderActivity.this, StartReciever.class);
-        //Log.i("TAG", "+++++++++++++++++++"+trip.getId()+"++++++++++++++++++++");
+
         startIntent.putExtra(MainActivity.TRIP_ID, new Gson().toJson(trip));
-        //Log.i("TAG", "+---------------------"+trip.getId()+"----------------");
-        //startIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
         startIntent.putExtra("ID", NOTIFICATION_ID);
         PendingIntent startPending = PendingIntent.getBroadcast(this, trip.getId(), startIntent, 0);
 
         Intent cancelIntent = new Intent(this, CancelReciever.class);
         cancelIntent.putExtra(MainActivity.TRIP_ID, new Gson().toJson(trip));
-        //cancelIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        // CancelIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         cancelIntent.putExtra("ID", NOTIFICATION_ID);
         PendingIntent cancelPending = PendingIntent.getBroadcast(this, trip.getId(), cancelIntent, 0);
 
@@ -239,11 +335,13 @@ public class ReminderActivity extends AppCompatActivity {
 
 
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         stopService(new Intent(this, FloatingViewService.class));
     }
+
     private boolean checkPermession() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -280,7 +378,7 @@ public class ReminderActivity extends AppCompatActivity {
         Intent intent = new Intent(ReminderActivity.this, FloatingViewService.class);
         intent.putExtra("tripList", new Gson().toJson(incomingTrip.getNoteList().getNoteList()));
         if (incomingTrip.getNoteList().getNoteList() != null) {
-            SharedPref.setFloatingNotes( new Gson().toJson(incomingTrip.getNoteList().getNoteList()));
+            SharedPref.setFloatingNotes(new Gson().toJson(incomingTrip.getNoteList().getNoteList()));
         }
         startService(intent);
     }
