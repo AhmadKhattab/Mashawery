@@ -42,8 +42,10 @@ import com.iti.gov.mashawery.model.NotesHolder;
 import com.iti.gov.mashawery.model.Trip;
 import com.iti.gov.mashawery.model.TripsDatabase;
 import com.iti.gov.mashawery.model.User;
+import com.iti.gov.mashawery.reminder.view.TripAlarm;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import io.reactivex.CompletableObserver;
@@ -86,6 +88,7 @@ public class LoginActivity extends AppCompatActivity {
         fDatabase = FirebaseDatabase.getInstance();
         SignInButton signInButton =binding.googleSignInButton;
         signInButton.setSize(SignInButton.SIZE_STANDARD);
+
         SharedPref.createPrefObject(this);
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,7 +110,12 @@ public class LoginActivity extends AppCompatActivity {
                                @Override
                                public void onComplete(@NonNull Task<AuthResult> task) {
                                    if (task.isSuccessful()) {
+
+                                       Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+
+
 //                                       Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+
                                        userID = fAuth.getCurrentUser().getUid();
 
                                       // progressDialog.dismiss();
@@ -118,7 +126,12 @@ public class LoginActivity extends AppCompatActivity {
                                        SharedPref.setUserId(userID);
                                        Log.e("le",email);
                                        syncData();
+
+                                       startActivity(intent);
+                                      // progressDialog.dismiss();
+
 //                                       startActivity(intent);
+
                                        finish();
                                    } else {
                                        Toast.makeText(LoginActivity.this,
@@ -144,8 +157,8 @@ public class LoginActivity extends AppCompatActivity {
 
            }
        });
-    }/*
-    @Override
+    }
+  /*  @Override
     protected void onStart() {
         super.onStart();
         account = GoogleSignIn.getLastSignedInAccount(this);
@@ -196,12 +209,16 @@ public class LoginActivity extends AppCompatActivity {
                 }
             });
 
+
             Intent intent = new Intent(this, MainActivity.class);
             SharedPref.setUserEmail(account.getEmail());
             SharedPref.setLoginWithFirebase(false);
             Log.i("gmailacc",account.getEmail());
+            SharedPref.setLogin(true);
 
             startActivity(intent);
+            finish();
+          //  progressDialog.dismiss();
         }  else {
             Toast.makeText(this, "Please login with a valid Google account", Toast.LENGTH_SHORT).show();
         }
@@ -219,8 +236,14 @@ public class LoginActivity extends AppCompatActivity {
                     Log.e("login",trip.getName());
                     tripList.add(new Trip(trip.getId(),trip.getUserId(),trip.getName(),trip.getStartPoint(),trip.getEndPoint(),trip.getDate(), trip.getTime(),
                             trip.getType(),trip.getRepetition(),trip.getStatus(),new Gson().fromJson(trip.getNoteList(),new TypeToken<NotesHolder>() { }.getType())));
-                }
+                }//habd
+
+
+
+
                 saveFromFirebaseToRoom(tripList);
+                //
+
 
             }
 
@@ -234,10 +257,34 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void saveFromFirebaseToRoom(List<Trip> tripList) {
+       /* for(Trip trip: tripList){
+            if(trip.getStatus() == 0){
+                if(TripAlarm.getTripDateAndTime(trip).getTimeInMillis()>Calendar.getInstance().getTimeInMillis()){
+                    TripAlarm.setAlarm(trip, this);
 
+                }else if( trip.getDate()!=null){
+                    trip.setStatus(MainActivity.STATUS_CANCEL);
+                }
+            }
+        }*/
+        //My filter goes here
+        Observable <Trip>  tripAlarmFilter = Observable.fromIterable(tripList) .filter(trip -> {
+            if(trip.getStatus() == 0){
+                if (trip.getDate()!=null){
+                    if(TripAlarm.getTripDateAndTime(trip).getTimeInMillis()>Calendar.getInstance().getTimeInMillis()){
+                        TripAlarm.setAlarm(trip, this);
+
+                    }else {
+                        trip.setStatus(MainActivity.STATUS_CANCEL);
+                    }
+
+                }
+            }
+            return true;
+        });
+        //ends here
         Observable<Trip> tripsObservable = Observable.fromIterable(tripList);
-
-        tripsObservable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+        tripAlarmFilter.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Trip>() {
             @Override
             public void onSubscribe(@io.reactivex.annotations.NonNull Disposable d) {

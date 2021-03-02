@@ -23,7 +23,9 @@ import com.iti.gov.mashawery.model.FirebaseTrip;
 import com.iti.gov.mashawery.model.FirebaseTripDao;
 import com.iti.gov.mashawery.model.Trip;
 import com.iti.gov.mashawery.model.TripsDatabase;
+import com.iti.gov.mashawery.model.repository.TripsRepo;
 import com.iti.gov.mashawery.registeration.view.LoginActivity;
+import com.iti.gov.mashawery.reminder.view.TripAlarm;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,6 +71,16 @@ public class Profile extends AppCompatActivity {
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /*My Habd begins here**/
+                List<Trip> allUpcomingTrips = TripsRepo.getInstance(Profile.this).tripListLiveData.getValue();
+                Log.i("TAG", "***************** "+"Size:" + allUpcomingTrips.size()+" ****************");
+                for(Trip trip :allUpcomingTrips){
+
+                    TripAlarm.cancelAlarm(Profile.this, trip.getId());
+                    Log.i("TAAAG", "*****************ALARM Should be canceled*****************");
+
+                }
+                /*My Habd begins here**/
                 SharedPref.setLogin(false);
                 deleteAllTripsFromRoom();
                 FirebaseAuth.getInstance().signOut();

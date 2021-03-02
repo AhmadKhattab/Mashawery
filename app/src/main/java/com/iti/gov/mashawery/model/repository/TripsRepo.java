@@ -20,7 +20,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class TripsRepo implements TripsRepoInterface {
 
-    private MutableLiveData<List<Trip>> tripListLiveData = new MutableLiveData<>();
+    public MutableLiveData<List<Trip>> tripListLiveData = new MutableLiveData<>();
     private MutableLiveData<List<Trip>> historyListLiveData = new MutableLiveData<>();
     private MutableLiveData<Trip> tripLiveData = new MutableLiveData<>();
     private TripsDatabase tripsDatabase;

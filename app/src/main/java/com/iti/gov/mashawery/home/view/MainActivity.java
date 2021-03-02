@@ -163,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
 
                 //Uri gmmIntentUri = Uri.parse("google.navigation:q=" + address);
 
-                if (checkPermession()) {
+              //  if (checkPermession()) {
 
                    if (isLocationEnabled()) {
                         Uri gmmIntentUri = Uri.parse("http://maps.google.com/maps?daddr=" + trip.getEndPoint());
@@ -184,9 +184,9 @@ public class MainActivity extends AppCompatActivity {
                         Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                         startActivity(intent);
                     }
-                } else {
-                    requestPermession();
-                }
+              //  } else {
+                   // requestPermession();
+               // }
 
 
             }
