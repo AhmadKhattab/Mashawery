@@ -125,7 +125,7 @@ public class ReminderActivity extends AppCompatActivity {
                         TripAlarm.cancelAlarm(ReminderActivity.this, incomingTrip.getId());
                         if (checkPermession()) {
                             if (isLocationEnabled()) {
-                                Uri gmmIntentUri = Uri.parse("google.navigation:q=" + incomingTrip.getEndPoint());
+                                Uri gmmIntentUri = Uri.parse("http://maps.google.com/maps?daddr=" + incomingTrip.getEndPoint());
                                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                                 mapIntent.setPackage("com.google.android.apps.maps");
                                 startActivity(mapIntent);
@@ -136,7 +136,7 @@ public class ReminderActivity extends AppCompatActivity {
                             }
                         } else {
                             //requestPermession();
-                            Uri gmmIntentUri = Uri.parse("google.navigation:q=" + incomingTrip.getEndPoint());
+                            Uri gmmIntentUri = Uri.parse("http://maps.google.com/maps?daddr=" + incomingTrip.getEndPoint());
                             Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                             mapIntent.setPackage("com.google.android.apps.maps");
                             startActivity(mapIntent);
@@ -194,7 +194,7 @@ public class ReminderActivity extends AppCompatActivity {
         AlertDialog alertDialog = builder.create();
 
         // Show the Alert Dialog box
-//        alertDialog.show();
+       alertDialog.show();
 
 
         ReminderDialogBinding reminderDialogBinding = ReminderDialogBinding.inflate(getLayoutInflater());
@@ -204,7 +204,7 @@ public class ReminderActivity extends AppCompatActivity {
 
 
         // On start trip clicked
-        reminderDialogBinding.btnStartTrip.setOnClickListener(new View.OnClickListener() {
+   /*     reminderDialogBinding.btnStartTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mediaPlayer.isPlaying()) {
@@ -231,6 +231,7 @@ public class ReminderActivity extends AppCompatActivity {
                         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                         mapIntent.setPackage("com.google.android.apps.maps");
                         startActivity(mapIntent);
+                        finish();
                     } else {
                         Toast.makeText(ReminderActivity.this, "Turn the Location on", Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
@@ -242,6 +243,7 @@ public class ReminderActivity extends AppCompatActivity {
                     Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                     mapIntent.setPackage("com.google.android.apps.maps");
                     startActivity(mapIntent);
+                    finish();
 
                 }
             }
@@ -261,6 +263,7 @@ public class ReminderActivity extends AppCompatActivity {
 
                 incomingTrip.setStatus(MainActivity.STATUS_CANCEL);
                 reminderViewModel.updateTripInDB(incomingTrip);
+                dialog.dismiss();
 
 
                 finish();
@@ -275,7 +278,9 @@ public class ReminderActivity extends AppCompatActivity {
                 if (mediaPlayer.isPlaying()) {
                     mediaPlayer.stop();
                     mediaPlayer.release();
+
                 }
+                dialog.dismiss();
                 finish();
                 showNotification(incomingTrip);
 
@@ -286,8 +291,8 @@ public class ReminderActivity extends AppCompatActivity {
         reminderDialogBinding.tvTripName.setText(incomingTrip.getName());
 
 
-        dialog.setCancelable(false);
-        dialog.show();
+        dialog.setCancelable(false);*/
+       // dialog.show();
         mediaPlayer.start();
 
     }

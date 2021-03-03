@@ -20,7 +20,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/logo"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
@@ -38,7 +38,8 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDzVXde0WUXvI46rNXrWRmlFADSzFsghbc" />
 
-        <activity android:name=".history.view.HistoryMapActivity" />
+        <activity android:name=".history.view.HistoryMapActivity"
+            android:screenOrientation="portrait"/>
 
         <receiver
             android:name=".reminder.view.CancelReciever"
@@ -50,8 +51,10 @@
             android:exported="true" />
 
 
-        <activity android:name=".Profile.Profile" />
-        <activity android:name=".registeration.view.splashScrean">
+        <activity android:name=".Profile.Profile"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".registeration.view.splashScrean"  android:screenOrientation="portrait">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -60,16 +63,17 @@
         </activity>
         <activity
             android:name=".reminder.view.ReminderActivity"
+            android:screenOrientation="portrait"
             android:excludeFromRecents="false"
             android:launchMode="singleTask"
             android:taskAffinity=""
             android:theme="@style/Theme.AppCompat.Light.Dialog.Alert" />
-        <activity android:name=".trip.edit.view.EditTripActivity" />
-        <activity android:name=".history.view.HistoryActivity" />
-        <activity android:name=".trip.create.view.TimePickers" />
-        <activity android:name=".registeration.view.LoginActivity" />
+        <activity android:name=".trip.edit.view.EditTripActivity"  android:screenOrientation="portrait"/>
+        <activity android:name=".history.view.HistoryActivity" android:screenOrientation="portrait" />
+        <activity android:name=".trip.create.view.TimePickers"  android:screenOrientation="portrait"/>
+        <activity android:name=".registeration.view.LoginActivity"  android:screenOrientation="portrait"/>
 
-        <activity android:name=".registeration.view.RegisterActivity" />
+        <activity android:name=".registeration.view.RegisterActivity" android:screenOrientation="portrait" />
 
 
 
