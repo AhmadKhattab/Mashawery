@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="392dp"
         android:text="Mashawery"
-        android:textSize="70sp"
+        android:textSize="60sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.37"

@@ -18,8 +18,8 @@
 
         <ImageView
             android:id="@+id/ivRemove"
-            android:layout_width="21dp"
-            android:layout_height="23dp"
+            android:layout_width="47dp"
+            android:layout_height="32dp"
             android:layout_gravity="right"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -45,6 +45,7 @@
 
             <TextView
                 android:id="@+id/tvDay"
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -89,26 +90,29 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:weightSum="3">
 
                 <TextView
                     android:id="@+id/textView11"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_weight="1"
                     android:text="@string/tvTripNameLabel"
+                    android:maxLines="1"
                     android:textSize="12sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tvTripName"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:gravity="center"
+                    android:maxLines="1"
                     android:text="TextViewTextView"
-                    android:textAlignment="center"
+                    android:textAlignment="textStart"
                     android:textSize="12sp" />
 
             </LinearLayout>
@@ -117,13 +121,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:weightSum="3">
 
                 <TextView
                     android:id="@+id/textView13"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
+                    android:maxLines="1"
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
                     android:text="@string/tvStartPointLabel"
@@ -132,12 +138,13 @@
 
                 <TextView
                     android:id="@+id/tvStartPoint"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
+                    android:maxLines="1"
                     android:gravity="center"
                     android:text="TextView"
-                    android:textAlignment="center"
+                    android:textAlignment="textStart"
                     android:textSize="12sp" />
             </LinearLayout>
 
@@ -145,11 +152,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:weightSum="3">
 
                 <TextView
                     android:id="@+id/textView15"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:maxLines="1"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="5dp"
@@ -160,12 +169,13 @@
 
                 <TextView
                     android:id="@+id/tvEndPoint"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:maxLines="1"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:gravity="center"
                     android:text="TextView"
-                    android:textAlignment="center"
+                    android:textAlignment="textStart"
                     android:textSize="12sp" />
             </LinearLayout>
 

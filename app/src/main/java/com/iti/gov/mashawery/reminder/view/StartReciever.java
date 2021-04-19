@@ -43,7 +43,7 @@ public class StartReciever extends BroadcastReceiver {
             SharedPref.setFloatingNotes( new Gson().toJson(trip.getNoteList().getNoteList()));
             Log.i("tripList notes", (trip.getNoteList().getNoteList().toString()));
         }context.startService(fintent);
-        Uri gmmIntentUri = Uri.parse("http://maps.google.com/maps?daddr=" + trip.getEndPoint());
+        Uri gmmIntentUri = Uri.parse("google.navigation:q=" + trip.getEndPoint());
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
         mapIntent.setPackage("com.google.android.apps.maps");
         mapIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

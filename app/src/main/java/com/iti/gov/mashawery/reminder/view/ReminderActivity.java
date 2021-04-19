@@ -30,6 +30,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.iti.gov.mashawery.R;
+//import com.iti.gov.mashawery.databinding.ReminderDialogBinding;
 import com.iti.gov.mashawery.databinding.ReminderDialogBinding;
 import com.iti.gov.mashawery.helpPackag.FloatingViewService;
 import com.iti.gov.mashawery.home.view.MainActivity;
@@ -125,7 +126,7 @@ public class ReminderActivity extends AppCompatActivity {
                         TripAlarm.cancelAlarm(ReminderActivity.this, incomingTrip.getId());
                         if (checkPermession()) {
                             if (isLocationEnabled()) {
-                                Uri gmmIntentUri = Uri.parse("http://maps.google.com/maps?daddr=" + incomingTrip.getEndPoint());
+                                Uri gmmIntentUri = Uri.parse("google.navigation:q=" + incomingTrip.getEndPoint());
                                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                                 mapIntent.setPackage("com.google.android.apps.maps");
                                 startActivity(mapIntent);
